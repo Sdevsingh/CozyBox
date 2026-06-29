@@ -71,7 +71,7 @@ function Intro() {
       <div className="mx-auto max-w-[1500px] px-6 sm:px-10 grid lg:grid-cols-2 gap-16 items-center">
         <div>
           <Reveal><p className="eyebrow mb-7">Welcome to the Cozy Box</p></Reveal>
-          <SplitReveal as="h2" text="Where Indian flavour meets the after-dark." className="text-5xl sm:text-6xl lg:text-7xl leading-[0.95] mb-9" />
+          <SplitReveal as="h2" text="Where Indian flavour meets the after-dark." className="text-4xl sm:text-5xl lg:text-6xl leading-[0.98] mb-9" />
           <motion.div initial="hidden" whileInView="show" viewport={viewport} variants={stagger} className="space-y-5 text-smoke text-lg leading-relaxed max-w-xl">
             <motion.p variants={fadeUp}>
               A bluestone room on Lygon Street that reimagines Indian tapas for the cocktail
@@ -114,7 +114,7 @@ function Showcase() {
     <section ref={ref} className="relative h-[360vh]" data-testid="showcase">
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         <div className="px-6 sm:px-10 mb-10 flex items-end justify-between max-w-[1500px] mx-auto w-full">
-          <h2 className="text-4xl sm:text-6xl leading-none">A night,<br />your way.</h2>
+          <h2 className="text-3xl sm:text-5xl leading-none">A night,<br />your way.</h2>
           <span className="hidden sm:block text-smoke-dim text-xs uppercase tracking-[0.3em]">Scroll →</span>
         </div>
         <motion.div style={{ x }} className="flex gap-6 sm:gap-8 pl-6 sm:pl-10 w-max">
@@ -125,7 +125,7 @@ function Showcase() {
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
               <span className="absolute top-7 left-7 font-display text-2xl text-amber/80">{p.n}</span>
               <div className="absolute inset-0 p-8 sm:p-10 flex flex-col justify-end">
-                <h3 className="text-4xl sm:text-5xl mb-3 group-hover:text-amber transition-colors">{p.label}</h3>
+                <h3 className="text-3xl sm:text-4xl mb-3 group-hover:text-amber transition-colors">{p.label}</h3>
                 <p className="text-smoke max-w-md mb-5">{p.copy}</p>
                 <span className="inline-flex items-center gap-2 text-amber text-xs uppercase tracking-[0.2em]">
                   Discover <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -150,7 +150,7 @@ function Spirits() {
       <div className="mx-auto max-w-[1500px] px-6 sm:px-10">
         <Reveal className="mb-14 text-center">
           <p className="eyebrow mb-4">From the distillery</p>
-          <SplitReveal as="h2" text="Our Fossey's spirits" className="text-4xl sm:text-6xl justify-center flex flex-wrap" />
+          <SplitReveal as="h2" text="Our Fossey's spirits" className="text-3xl sm:text-5xl justify-center flex flex-wrap" />
         </Reveal>
         <motion.div initial="hidden" whileInView="show" viewport={viewport} variants={stagger} className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {spirits.slice(0, 4).map((s) => (
@@ -189,7 +189,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-ink/82" />
         <div className="relative mx-auto max-w-3xl text-center px-6">
           <Reveal><p className="eyebrow mb-5">Members get more</p></Reveal>
-          <SplitReveal as="h2" text="The Cocktail Passport" className="text-5xl sm:text-7xl mb-7 text-glow justify-center flex flex-wrap" />
+          <SplitReveal as="h2" text="The Cocktail Passport" className="text-4xl sm:text-6xl mb-7 text-glow justify-center flex flex-wrap" />
           <Reveal><p className="text-smoke text-lg mb-9 max-w-xl mx-auto">A cocktail on the house every visit, double stamps, skip-the-line entry and member-only masterclasses. Collect stamps, unlock rewards.</p></Reveal>
           <Reveal><Magnetic><GlowButton to="/passport" data-testid="home-passport-cta">Become a Member</GlowButton></Magnetic></Reveal>
         </div>
@@ -204,7 +204,7 @@ export default function Home() {
       {/* CTA */}
       <section className="py-32 sm:py-44">
         <div className="mx-auto max-w-[1500px] px-6 sm:px-10 text-center">
-          <SplitReveal as="h2" text="Your table is waiting." className="text-6xl sm:text-8xl leading-[0.92] mb-10 justify-center flex flex-wrap" />
+          <SplitReveal as="h2" text="Your table is waiting." className="text-5xl sm:text-7xl leading-[0.95] mb-10 justify-center flex flex-wrap" />
           <Magnetic><GlowButton to="/book" data-testid="home-book-cta">Book a Table</GlowButton></Magnetic>
         </div>
       </section>

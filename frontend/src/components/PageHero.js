@@ -15,7 +15,7 @@ export default function PageHero({ eyebrow, title, sub, image }) {
         )}
         <motion.h1
           initial="hidden" whileInView="show" viewport={{ once: true }} variants={blurReveal}
-          className="text-5xl sm:text-6xl lg:text-7xl leading-[0.95] max-w-4xl"
+          className="text-4xl sm:text-5xl lg:text-6xl leading-[0.98] max-w-4xl"
         >
           {title}
         </motion.h1>
