@@ -1,0 +1,33 @@
+{
+  "summary": "Phase-1 cinematic regression for Cozy Box. Backend pytest 15/15 PASS. Updated retail count assertion from 4 -> 12 (Fossey's full range now seeded). Full frontend E2E PASS: preloader counter (~2s) -> dismiss -> age-gate -> body overflow released (computed 'hidden auto' which is overflow-x:hidden / overflow-y:auto, page IS scrollable, confirmed by scrolling to footer at y=8171). Hero magnetic CTAs (hero-book, hero-menu) clickable & navigate. Pinned horizontal showcase ([data-testid='showcase']) present with all 4 panels (panel-the-menu, panel-the-cellar, panel-what-s-on, panel-private-events); panel click navigates correctly and page is NOT trapped (footer reachable, home-passport-cta & home-book-cta reachable below the showcase). Spirits grid renders 4 items. Header: 6 nav links + logo + Book — all navigate. Menu tabs switch food/drink. Cellar shows 12 retail products; add-to-cart opens cart-drawer; checkout shows checkout-notice (Phase-2 mock). Booking flow (date -> 10 slots -> submit -> booking-success) OK. Contact submit -> contact-success OK. Private enquiry-submit -> enquiry-success OK; brochure link confirmed REMOVED. Zero uncaught console errors during full run.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_cozybox_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "(Already noted in iter-1, low-prio) Lenis wrapper position:relative to silence console warning; React Router v7 future flags."
+  ],
+  "critical_code_review_comments": [
+    "Preloader sets document.body.style.overflow='hidden' then clears on completion via setTimeout. There is a small race window: AnimatePresence exit lasts 0.9s but body overflow is released BEFORE the exit animation finishes (setDone(true) is called in the same tick). In practice fine, but if exit animation throws, body could remain unlocked while preloader still occludes content. Consider releasing overflow in AnimatePresence's onExitComplete for stricter ordering.",
+    "Cellar shop has 12 visible products but add-to-cart selectors [data-testid^='add-'] returned exactly 12 — good. Cart checkout button required JS .click() because Lenis offset placed it outside Playwright's visible viewport; not a user bug (real users can scroll the drawer) but worth noting if e2e CI is run elsewhere.",
+    "All form inputs (name/email/phone/message) lack name attributes; Playwright must rely on placeholders. Adding name='name'/'email'/'phone'/'message' would harden automation & accessibility (autofill).",
+    "Home showcase panels navigate via in-section content. Verify mobile layout: at 360vh pinned section, very tall tablet/mobile heights could create jank — visual review recommended (not tested headless here).",
+    "All backend pytest assertions now use len(items)==12 for retail (previous run expected 4). Lock catalog size with an admin endpoint or constant test to detect accidental changes."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_cozybox_api.py (retail count 4 -> 12)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "None — public site, /app/memory/test_credentials.md not applicable.",
+  "seed_data_creation": "Pytest writes 1 contact_message, 1 booking, 1 package_enquiry per run (TEST_ prefixed); negligible volume. Playwright E2E writes the same 3 records once.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All cinematic upgrades verified: counter preloader, magnetic CTAs, split-text reveals (rendered without errors), pinned horizontal showcase 360vh (panels clickable, scroll passes through). Use sessionStorage cozybox_loaded=1 + cozybox_age_ok=1 to skip preloader/age-gate when testing internal pages. Form inputs have no name attrs — use placeholders. Use JS .click() for cart-drawer checkout-btn to avoid Lenis-induced viewport offset in headless mode. All data-testids documented in request are present and working.",
+  "rca of the issue": "No bugs found. Body overflow value 'hidden auto' is the CSS shorthand for overflow-x:hidden + overflow-y:auto (set globally for the dark site), NOT a stuck preloader lock — verified by successful scroll to bottom (y=8171) and footer visibility."
+}

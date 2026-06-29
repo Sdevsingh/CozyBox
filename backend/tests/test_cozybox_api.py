@@ -59,7 +59,7 @@ def test_catalog_retail(client):
     r = client.get(f"{API}/catalog", params={"category": "retail"}, timeout=15)
     assert r.status_code == 200
     items = r.json()["items"]
-    assert len(items) == 4
+    assert len(items) == 12
     assert all(i["category"] == "retail" for i in items)
 
 

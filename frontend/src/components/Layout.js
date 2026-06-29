@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import SmoothScroll from "./SmoothScroll";
 import SpotlightCursor from "./SpotlightCursor";
 import AgeGate from "./AgeGate";
+import Preloader from "./Preloader";
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -18,6 +19,7 @@ export default function Layout() {
       <SmoothScroll />
       <SpotlightCursor />
       <div className="grain" aria-hidden />
+      <Preloader />
       <AgeGate />
       <Header />
       <main className="relative min-h-screen">

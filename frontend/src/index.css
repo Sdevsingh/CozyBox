@@ -60,6 +60,18 @@ body.cursor-grow .spotlight-cursor { width: 620px !important; height: 620px !imp
 .text-glow { text-shadow: 0 0 24px rgba(255, 159, 28, 0.35); }
 .hairline { border-color: rgba(255, 255, 255, 0.08); }
 
+/* Outline / stroke type for oversized editorial headlines */
+.outline-text { -webkit-text-stroke: 1px rgba(255,255,255,0.45); color: transparent; }
+.outline-amber { -webkit-text-stroke: 1.5px rgba(255,159,28,0.75); color: transparent; }
+.mix-screen { mix-blend-mode: screen; }
+
+/* Reverse marquee */
+@keyframes marqueeRev { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.animate-marquee-rev { animation: marqueeRev 38s linear infinite; }
+
+/* Split-text line masking */
+.line-mask { overflow: hidden; display: block; }
+
 /* Cinemagraph / Ken Burns — gives still photos a slow "video" drift */
 @keyframes kenburns {
   0%   { transform: scale(1.06) translate3d(0, 0, 0); }
