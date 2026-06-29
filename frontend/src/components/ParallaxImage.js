@@ -6,16 +6,12 @@ export default function ParallaxImage({ src, alt = "", className = "", amount = 
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [`-${amount}%`, `${amount}%`]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.15, 1.25]);
 
   return (
     <div ref={ref} className={`overflow-hidden ${className}`}>
-      <motion.img
-        src={src}
-        alt={alt}
-        style={{ y, scale }}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      <motion.div style={{ y }} className="absolute inset-0">
+        <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover kenburns-slow" />
+      </motion.div>
       <div className={`absolute inset-0 ${overlay}`} />
     </div>
   );

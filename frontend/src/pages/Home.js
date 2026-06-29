@@ -15,10 +15,12 @@ function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
 
   return (
-    <section ref={ref} className="relative h-[100svh] min-h-[640px] flex items-center justify-center overflow-hidden" data-testid="hero">
-      <motion.img src="/img/hero_club.jpg" alt="" style={{ y, scale }} className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/75 via-ink/60 to-ink" />
-      <div className="absolute inset-0 bg-ink/30" />
+    <section ref={ref} className="relative h-[100svh] min-h-[640px] flex items-center justify-center overflow-hidden vignette" data-testid="hero">
+      <motion.div style={{ y, scale }} className="absolute inset-0">
+        <img src="/img/hero_club.jpg" alt="" className="h-full w-full object-cover kenburns" />
+      </motion.div>
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/75 via-ink/55 to-ink" />
+      <div className="absolute inset-0 bg-ink/25" />
       <div className="relative text-center px-6 max-w-3xl">
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="eyebrow mb-5">
           Carlton · Melbourne · by Fossey's Distillery
@@ -147,7 +149,7 @@ export default function Home() {
           </Reveal>
           <motion.div initial="hidden" whileInView="show" viewport={viewport} variants={stagger}
             className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-            {spirits.map((s) => (
+            {spirits.slice(0, 4).map((s) => (
               <motion.div key={s.id} variants={fadeUp}>
                 <Link to="/shop" data-testid={`spirit-${s.id}`}
                   className="group block rounded-2xl border hairline bg-ink-surface/50 p-6 h-full hover:border-amber/40 transition-colors">

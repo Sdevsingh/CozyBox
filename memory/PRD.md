@@ -44,3 +44,22 @@ Home · Our Story · Menu (Food/Cocktails) · What's On · Private & Events · T
 
 ## Notes
 - No authentication in Phase 1. Mocked: Square commerce/bookings/loyalty.
+
+## Update 2026-06-29 (Iteration 2)
+- Replaced ALL AI imagery with the client's 6 real photos (entrance arch, dining
+  room, copper still, glowing Cozy Box sign, bust cocktail glass, B&W portrait),
+  mapped across hero + all section/page heroes.
+- Added cinemagraph motion: CSS Ken Burns drift on hero + parallax heroes (the
+  "video-like" feel) + edge vignette, on top of existing Lenis scroll, spotlight
+  cursor, glow buttons, staggered reveals, reviews marquee.
+- The Cellar now lists the REAL Fossey's range (Gin/Vodka/Whisky/Rum/Indian Series)
+  with real ABV/sizes/prices sourced from the distillery brochure.
+- Removed the brochure PDF download link (per client). NOTE: the supplied brochure
+  is a wholesale PRODUCT catalogue — it contains NO event content; event listings
+  remain curated placeholders pending real event details from client.
+- Responsiveness confirmed via Tailwind breakpoints (mobile hamburger, responsive grids).
+
+## Open question for client
+- Need real What's On / event details (names, dates, prices) to replace placeholders.
+- Higgsfield: true AI image->video generation not available in-platform; delivered
+  CSS cinemagraph (Ken Burns/parallax). Can integrate real video clips if provided.

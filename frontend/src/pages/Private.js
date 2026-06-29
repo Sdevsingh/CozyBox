@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Download } from "lucide-react";
+import { Check } from "lucide-react";
 import { api, formatPrice } from "../lib/api";
 import { fadeUp, stagger, viewport } from "../lib/motion";
 import PageHero from "../components/PageHero";
@@ -62,10 +62,7 @@ export default function Private() {
           </motion.div>
 
           <div className="mt-12 text-center">
-            <a href="/brochures/fosseys-distillery-catalogue.pdf" target="_blank" rel="noreferrer"
-              className="inline-flex items-center gap-2 text-amber text-sm uppercase tracking-[0.2em] hover:gap-4 transition-all" data-testid="brochure-link">
-              <Download size={16} /> Download our brochure
-            </a>
+            <p className="text-smoke-dim text-sm max-w-xl mx-auto">Every function is tailored to you. Send an enquiry below and our events team will craft a bespoke package and quote.</p>
           </div>
         </div>
       </section>

@@ -38,11 +38,19 @@ CATALOG = [
     {"id": "DRK_MASALA_MARTINI", "name": "Masala Martini", "description": "Spiced chai-washed vodka, vermouth, cardamom — stirred & cold.", "price": 2400, "category": "drink", "section": "Signature Cocktails", "dietary": []},
     {"id": "DRK_MANGO_LASSI_SOUR", "name": "Mango Lassi Sour", "description": "Gin, alphonso mango, yogurt, lime, saffron.", "price": 2200, "category": "drink", "section": "Signature Cocktails", "dietary": []},
 
-    # ── Distillery retail (The Cellar) ──
-    {"id": "ITEM_REDGUM_HONEY_RUM", "name": "Redgum Honey Rum", "description": "Fossey's small-batch rum mellowed with native redgum honey. 700ml.", "price": 8500, "category": "retail", "section": "Our Distillery Products", "dietary": []},
-    {"id": "ITEM_PEATED_WHISKY", "name": "Peated Single Malt Single Barrel Whisky", "description": "Single barrel, peated single malt whisky. 700ml.", "price": 16000, "category": "retail", "section": "Our Distillery Products", "dietary": []},
-    {"id": "ITEM_BLOOD_ORANGE_VODKA", "name": "Blood Orange Vodka", "description": "Bright, citrus-forward vodka infused with blood orange. 700ml.", "price": 6500, "category": "retail", "section": "Our Distillery Products", "dietary": []},
-    {"id": "ITEM_CHILLI_GIN", "name": "Chilli Gin", "description": "Botanical gin with a slow build of warming chilli. 700ml.", "price": 7500, "category": "retail", "section": "Our Distillery Products", "dietary": []},
+    # ── Distillery retail (The Cellar) — real Fossey's range ──
+    {"id": "GIN_ORIGINAL", "name": "Original Gin", "description": "Botanical-forward London dry, crafted with precision. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": []},
+    {"id": "GIN_SHIRAZ", "name": "Shiraz Gin", "description": "Barossa shiraz steeped over the original botanicals. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": []},
+    {"id": "GIN_NAVAL", "name": "Naval Strength Gin", "description": "Bold, high-proof and intensely aromatic. 57% ABV · 700ml.", "price": 9500, "category": "retail", "section": "Gin", "dietary": []},
+    {"id": "GIN_CHILLI", "name": "Chilli Gin", "description": "Botanical gin with a slow build of warming chilli. 40% ABV · 500ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": []},
+    {"id": "VODKA_BLOOD_ORANGE", "name": "Blood Orange Vodka", "description": "Bright, citrus-forward vodka infused with blood orange. 40% ABV · 700ml.", "price": 6000, "category": "retail", "section": "Vodka", "dietary": []},
+    {"id": "WHISKY_SINGLE_MALT", "name": "Single Malt Whisky", "description": "Rich, balanced single malt with depth and character. 44% ABV · 500ml.", "price": 16000, "category": "retail", "section": "Whisky", "dietary": []},
+    {"id": "WHISKY_PEATED", "name": "Peated Single Malt", "description": "Smoky, single-barrel peated malt. 44% ABV · 500ml.", "price": 16500, "category": "retail", "section": "Whisky", "dietary": []},
+    {"id": "RUM_HONEY", "name": "Honey Rum", "description": "Small-batch rum mellowed with native honey. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Rum", "dietary": []},
+    {"id": "RUM_REDGUM", "name": "Redgum Rum", "description": "Warm, rounded rum with a smooth redgum finish. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Rum", "dietary": []},
+    {"id": "IND_PAAN", "name": "Paan Gin Liquor", "description": "Indian Series — betel-leaf paan, sweet and aromatic. 35% ABV · 700ml.", "price": 9700, "category": "retail", "section": "Indian Series", "dietary": []},
+    {"id": "IND_KALA_KHATTA", "name": "Kala Khatta Gin Liquor", "description": "Indian Series — tangy, dark jamun kala khatta. 36.5% ABV · 700ml.", "price": 9700, "category": "retail", "section": "Indian Series", "dietary": []},
+    {"id": "IND_ROYAL_ATTAR", "name": "Royal Attar Vodka", "description": "Indian Series — rose & saffron royal attar. 35.4% ABV · 700ml.", "price": 9700, "category": "retail", "section": "Indian Series", "dietary": []},
 ]
 
 EVENTS = [

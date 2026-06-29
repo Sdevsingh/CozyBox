@@ -60,6 +60,24 @@ body.cursor-grow .spotlight-cursor { width: 620px !important; height: 620px !imp
 .text-glow { text-shadow: 0 0 24px rgba(255, 159, 28, 0.35); }
 .hairline { border-color: rgba(255, 255, 255, 0.08); }
 
+/* Cinemagraph / Ken Burns — gives still photos a slow "video" drift */
+@keyframes kenburns {
+  0%   { transform: scale(1.06) translate3d(0, 0, 0); }
+  100% { transform: scale(1.22) translate3d(-2%, -2.5%, 0); }
+}
+.kenburns { animation: kenburns 26s ease-in-out infinite alternate; will-change: transform; }
+@keyframes kenburns2 {
+  0%   { transform: scale(1.12) translate3d(1.5%, 1%, 0); }
+  100% { transform: scale(1.04) translate3d(-1.5%, -1.5%, 0); }
+}
+.kenburns-slow { animation: kenburns2 32s ease-in-out infinite alternate; will-change: transform; }
+
+/* Vignette to deepen edges over photos */
+.vignette::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%);
+}
+
 .eyebrow {
   font-family: "Outfit", sans-serif;
   text-transform: uppercase;
