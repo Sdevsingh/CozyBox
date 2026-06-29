@@ -20,7 +20,7 @@ export default function Layout() {
       <div className="grain" aria-hidden />
       <AgeGate />
       <Header />
-      <main className="min-h-screen">
+      <main className="relative min-h-screen">
         <Outlet />
       </main>
       <Footer />
