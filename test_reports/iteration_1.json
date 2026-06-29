@@ -1,0 +1,41 @@
+{
+  "summary": "Full backend + frontend regression for Cozy Box Phase 1. 15/15 pytest API tests pass. All UI testids exercised: age-gate, hero CTAs, header nav (6 links), menu tabs (food/drink), Cellar add-to-cart -> cart drawer -> checkout Phase-2 notice, booking flow (date->slots->submit->success), contact submit success, private/events enquiry submit success, What's On events, Our Story, Passport plans. No uncaught page errors. Only console warnings are the documented React Router v7 future-flag warnings + a Lenis 'non-static container' warning (cosmetic).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Console (all pages)", "issues": ["Lenis warning: 'Please ensure that the container has a non-static position, like relative/fixed/absolute, to ensure scroll offset is calculated correctly.' Repeats on every route. Cosmetic but should be silenced by adding position:relative to the Lenis wrapper element."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_cozybox_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "(Low-prio cosmetic) Add position:relative (or fixed/absolute) to the Lenis wrapper to silence repeated console warning.",
+    "(Optional) Adopt React Router v7 future flags (v7_startTransition, v7_relativeSplatPath) to remove deprecation warnings — explicitly noted as acceptable in the request."
+  ],
+  "critical_code_review_comments": [
+    "server.py: catalog endpoint returns full list with no pagination; fine for 21 items today but consider limit/skip before adding more data.",
+    "Mongo writes use .insert_one but inserted doc is mutated by Motor (adds _id). _save correctly strips _id before returning — good. Confirm callers never reuse the returned dict to insert again.",
+    "CORS allow_origins=['*'] with allow_methods/headers='*' is fine for Phase 1 demo but should be tightened before production (restrict to the public domain).",
+    "No rate limiting on POST /contact, /bookings, /packages/enquiries — public, unauthenticated write endpoints. Add basic IP throttling (slowapi/fastapi-limiter) before launch.",
+    "BookingIn.date/time are plain strings without format validation. Accepts '2026-13-99' / 'banana'. Consider date/time pydantic types or regex validators.",
+    "Frontend body has cursor:none (custom SpotlightCursor). Verify accessibility — keyboard users / touch devices fall back gracefully; appears to (touch wins on mobile).",
+    "Lenis warning recurring on every route — cheap fix: ensure html or main wrapper has position:relative."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_cozybox_api.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "None — public site, no auth. /app/memory/test_credentials.md not present (not applicable for this app).",
+  "seed_data_creation": "Test inserts 1 contact_messages, 1 bookings, 1 package_enquiries doc per test run (prefixed TEST_ in name field). No cleanup performed — volume is negligible.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend lives at /app/backend/server.py with content in content.py. Pytest file /app/backend/tests/test_cozybox_api.py covers every documented API. Frontend uses Lenis smooth scroll + age gate (data-testid=age-gate-yes) that must be clicked first on every fresh session. All interactive elements have data-testids matching the request. Square is intentionally mocked — checkout shows data-testid='checkout-notice' instead of charging.",
+  "rca of the issue": "No bugs identified. The only non-blocking observation is a repeated Lenis console warning about a non-static positioned container — purely cosmetic, no functional impact."
+}

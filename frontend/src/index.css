@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --amber: #ff9f1c;
+  --gold: #d4af37;
+}
+
+* { -webkit-font-smoothing: antialiased; }
+
+html, body {
+  background: #0a0a0a;
+  color: #fff;
+  margin: 0;
+}
+
+body {
+  font-family: "Outfit", system-ui, sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* hide custom cursor on touch devices */
+@media (hover: none) {
+  body { cursor: auto; }
+  .spotlight-cursor, .cursor-dot { display: none !important; }
+}
+
+h1, h2, h3, h4 { font-family: "Cormorant Garamond", serif; font-weight: 300; }
+
+::selection { background: rgba(255, 159, 28, 0.3); color: #fff; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #2a2620; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--amber); }
+
+/* Film grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+body.cursor-grow .cursor-dot { width: 4px !important; height: 4px !important; }
+body.cursor-grow .spotlight-cursor { width: 620px !important; height: 620px !important; margin-left: -310px !important; margin-top: -310px !important; }
+.spotlight-cursor { transition: width .4s ease, height .4s ease, margin .4s ease; }
+
+.text-glow { text-shadow: 0 0 24px rgba(255, 159, 28, 0.35); }
+.hairline { border-color: rgba(255, 255, 255, 0.08); }
+
+.eyebrow {
+  font-family: "Outfit", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.72rem;
+  color: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
