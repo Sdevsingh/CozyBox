@@ -7,3 +7,9 @@ build/
 .DS_Store
 coverage/
 .vite/
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
