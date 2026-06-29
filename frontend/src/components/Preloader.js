@@ -28,7 +28,7 @@ export default function Preloader() {
   }, [done]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => { document.body.style.overflow = ""; }}>
       {!done && (
         <motion.div
           className="fixed inset-0 z-[100] bg-ink flex flex-col items-center justify-center"

@@ -63,3 +63,12 @@ Home · Our Story · Menu (Food/Cocktails) · What's On · Private & Events · T
 - Need real What's On / event details (names, dates, prices) to replace placeholders.
 - Higgsfield: true AI image->video generation not available in-platform; delivered
   CSS cinemagraph (Ken Burns/parallax). Can integrate real video clips if provided.
+
+## Update 2026-06-29 (Iteration 3 — Cinematic overhaul)
+- Added a counter PRELOADER (0->100, logo, curtain wipe) once per session.
+- Home rebuilt for "wow": kinetic split-text reveals (word masking), a PINNED
+  HORIZONTAL-SCROLL showcase (4 big panels), oversized infinite marquee bands,
+  magnetic hover buttons, sticky clip-path scaling intro image, Ken Burns + parallax.
+- Side vertical labels in hero, glow CTAs, reviews marquee retained.
+- Verified: testing agent iteration_2 — backend 15/15, frontend 100%, zero bugs;
+  pinned section does not trap scroll; preloader releases scroll lock.
