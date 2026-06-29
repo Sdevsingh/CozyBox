@@ -1,20 +1,27 @@
 # CozyBox
 
-The new **cozybox.au** — a React website for *Cozy Box by Fossey's Distillery* (Indian tapas & distillery, Carlton, Melbourne), unifying three customer experiences on top of Square:
+The new **cozybox.au** — a React website for *Cozy Box by Fossey's Distillery*, an electric **cocktail bar & lounge** in Carlton, Melbourne. It unifies the customer experiences on top of Square:
 
 ```
                          cozybox.au (React)
                                 │
+   Home · Our Story · Menu · What's On · Private & Functions · Online Shop
+                  (+ Cocktail Passport · Book · Contact)
+                                │
         ┌───────────────────────┼───────────────────────┐
         ↓                       ↓                       ↓
-  Online Shop             Table Booking             Plate Pass
-  Catalog · Orders        Bookings · Customers      Loyalty · Customers
-  · Payments              · Locations               · Subscriptions
+  Online Shop             Table Booking          Cocktail Passport
+  Catalog · Orders        Bookings · Customers   Loyalty · Customers
+  · Payments              · Locations            · Subscriptions
         └───────────────────────┴───────────────────────┘
                                 │
                         Square Dashboard  ←→  Square POS (in venue)
                           (one source of truth, real time)
 ```
+
+> The site was redesigned from an Indian-tapas concept to a club/bar nightlife
+> vibe. Hero/section imagery in `web/public/img/` was AI-generated, and the
+> Fossey's distillery catalogue PDF is bundled in `web/public/brochures/`.
 
 ## Architecture
 
@@ -23,7 +30,7 @@ This is an npm-workspaces monorepo:
 | Workspace | Stack | Purpose |
 | --- | --- | --- |
 | `server` | Node + Express + TypeScript | API that proxies the Square APIs (catalog, orders, payments, bookings, customers, locations, loyalty, subscriptions). Square access tokens stay server-side. |
-| `web` | React + Vite + TypeScript | The customer-facing site: Home, Online Shop, Table Booking, Plate Pass. |
+| `web` | React + Vite + TypeScript | The customer-facing site: Home, Our Story, Menu, What's On, Private & Functions, Online Shop, Cocktail Passport, Book, Contact. |
 
 ### Mock mode vs. Square mode
 
@@ -63,6 +70,8 @@ All endpoints are under `/api`:
 - `GET /api/bookings/availability?date=YYYY-MM-DD` · `POST /api/bookings`
 - `GET /api/loyalty/program` · `POST /api/loyalty/accounts` · `POST /api/loyalty/accrue`
 - `GET /api/subscriptions/plans` · `POST /api/subscriptions`
+- `GET /api/events` · `GET /api/events/:id` — What's On programme
+- `GET /api/packages` · `POST /api/packages/enquiries` — Private & Functions
 
 ## Configuration
 
