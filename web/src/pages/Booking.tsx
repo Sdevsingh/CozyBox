@@ -71,14 +71,25 @@ export default function Booking() {
     });
 
   return (
-    <section className="section container">
-      <p className="eyebrow">Table Booking</p>
-      <h2>Reserve your table</h2>
-      <p className="muted">
-        Backed by Square Bookings, Customers & Locations. Pick a date and time,
-        and we'll have your table ready.
-      </p>
+    <>
+      <section className="hero" style={{ minHeight: "44vh" }}>
+        <div
+          className="hero-bg"
+          style={{ backgroundImage: "url(/img/hero_club.png)" }}
+        />
+        <div className="container hero-content">
+          <p className="eyebrow">Book Your Experience</p>
+          <h1 style={{ fontSize: "clamp(42px,7vw,76px)" }}>
+            Reserve a <span className="neon-text">Table</span>
+          </h1>
+          <p className="lede">
+            Pick a date and time and we'll have your table ready. Backed by
+            Square Bookings, Customers & Locations.
+          </p>
+        </div>
+      </section>
 
+      <section className="section container">
       {locations[0] && (
         <div className="card" style={{ margin: "14px 0" }}>
           <strong>{locations[0].name}</strong>
@@ -181,6 +192,7 @@ export default function Booking() {
           </div>
         </form>
       )}
-    </section>
+      </section>
+    </>
   );
 }

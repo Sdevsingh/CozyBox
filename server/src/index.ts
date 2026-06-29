@@ -13,6 +13,8 @@ import { paymentsRouter } from "./routes/payments.js";
 import { bookingsRouter } from "./routes/bookings.js";
 import { loyaltyRouter } from "./routes/loyalty.js";
 import { subscriptionsRouter } from "./routes/subscriptions.js";
+import { eventsRouter } from "./routes/events.js";
+import { packagesRouter } from "./routes/packages.js";
 
 const app = express();
 
@@ -42,6 +44,8 @@ app.use("/api/payments", paymentsRouter);
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/loyalty", loyaltyRouter);
 app.use("/api/subscriptions", subscriptionsRouter);
+app.use("/api/events", eventsRouter);
+app.use("/api/packages", packagesRouter);
 
 // 404 for unknown API routes
 app.use("/api", (_req, res) => {

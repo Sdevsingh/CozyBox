@@ -35,6 +35,32 @@ export interface CustomerInput {
   phone?: string;
 }
 
+export interface VenueEvent {
+  id: string;
+  title: string;
+  tagline: string;
+  date: string;
+  startTime: string;
+  category: string;
+  description: string;
+  priceFrom: number | null;
+  currency: string;
+  image: string;
+  bookable: boolean;
+}
+
+export interface FunctionPackage {
+  id: string;
+  name: string;
+  blurb: string;
+  priceFrom: number;
+  currency: string;
+  capacity: string;
+  inclusions: string[];
+  image: string;
+  brochureUrl: string;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
@@ -101,6 +127,21 @@ export const api = {
       "/api/loyalty/accounts",
       { method: "POST", body: JSON.stringify(body) },
     ),
+
+  events: () => request<{ events: VenueEvent[] }>("/api/events"),
+
+  packages: () => request<{ packages: FunctionPackage[] }>("/api/packages"),
+
+  enquire: (body: {
+    packageId: string;
+    guests: number;
+    preferredDate?: string;
+    message?: string;
+    customer: CustomerInput;
+  }) => request<{ enquiry: any; package: FunctionPackage; source: string }>(
+    "/api/packages/enquiries",
+    { method: "POST", body: JSON.stringify(body) },
+  ),
 };
 
 export const formatAUD = (cents: number): string =>

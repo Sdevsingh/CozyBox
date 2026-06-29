@@ -74,6 +74,17 @@ export interface Subscription {
   createdAt: string;
 }
 
+export interface FunctionEnquiry {
+  id: string;
+  packageId: string;
+  customerId: string;
+  preferredDate?: string;
+  guests: number;
+  message?: string;
+  status: "NEW";
+  createdAt: string;
+}
+
 interface DB {
   orders: Map<string, Order>;
   payments: Map<string, Payment>;
@@ -81,6 +92,7 @@ interface DB {
   bookings: Map<string, Booking>;
   loyalty: Map<string, LoyaltyAccount>;
   subscriptions: Map<string, Subscription>;
+  enquiries: Map<string, FunctionEnquiry>;
 }
 
 export const db: DB = {
@@ -90,6 +102,7 @@ export const db: DB = {
   bookings: new Map(),
   loyalty: new Map(),
   subscriptions: new Map(),
+  enquiries: new Map(),
 };
 
 export const newId = (prefix: string): string =>

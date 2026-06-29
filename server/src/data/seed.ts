@@ -201,7 +201,10 @@ export const CATALOG: CatalogItem[] = [
   },
 ];
 
-/** Plate Pass — loyalty + subscription tiers (Square Loyalty / Subscriptions). */
+/**
+ * Cocktail Passport — membership / subscription tiers
+ * (Square Loyalty / Subscriptions).
+ */
 export interface PlatePassPlan {
   id: string;
   name: string;
@@ -213,42 +216,200 @@ export interface PlatePassPlan {
 
 export const PLATE_PASS_PLANS: PlatePassPlan[] = [
   {
-    id: "PLAN_PLATE_PASS_MONTHLY",
-    name: "Plate Pass — Monthly",
+    id: "PLAN_PASSPORT_MONTHLY",
+    name: "Cocktail Passport — Monthly",
     cadence: "MONTHLY",
-    price: 2900,
+    price: 3900,
     currency: "AUD",
     perks: [
-      "10% off every dine-in visit",
-      "2× loyalty points on all spend",
-      "Priority table booking windows",
-      "Member-only tasting events",
+      "1 signature cocktail on the house every visit",
+      "2× passport stamps (loyalty points) on all spend",
+      "Skip-the-line entry on event nights",
+      "Member-only masterclasses & tastings",
     ],
   },
   {
-    id: "PLAN_PLATE_PASS_ANNUAL",
-    name: "Plate Pass — Annual",
+    id: "PLAN_PASSPORT_ANNUAL",
+    name: "Cocktail Passport — Annual",
     cadence: "ANNUAL",
-    price: 29000,
+    price: 39000,
     currency: "AUD",
     perks: [
       "Everything in Monthly",
-      "One free Five-Dish Tasting Menu each year",
-      "Complimentary welcome cocktail every visit",
-      "Early access to distillery releases",
+      "Complete the passport → unlock a private cocktail masterclass for 4",
+      "Priority RSVP to Ladies Night & launch parties",
+      "Early access to limited Fossey's distillery releases",
     ],
   },
 ];
 
 /** Loyalty program config (mirrors a Square Loyalty program). */
 export const LOYALTY_PROGRAM = {
-  id: "LOYALTY_PLATE_PASS",
-  name: "Plate Pass Rewards",
-  /** points earned per AUD dollar spent */
+  id: "LOYALTY_COCKTAIL_PASSPORT",
+  name: "Cocktail Passport Stamps",
+  /** points (stamps) earned per AUD dollar spent */
   pointsPerDollar: 1,
   rewardTiers: [
-    { id: "TIER_100", name: "$10 off", points: 100 },
-    { id: "TIER_250", name: "Free dessert + $15 off", points: 250 },
-    { id: "TIER_500", name: "Free Five-Dish Tasting Menu", points: 500 },
+    { id: "TIER_50", name: "Free signature cocktail", points: 50 },
+    { id: "TIER_150", name: "Cocktail flight for two", points: 150 },
+    { id: "TIER_300", name: "Private cocktail masterclass", points: 300 },
   ],
 };
+
+/** What's On — events programme. */
+export interface VenueEvent {
+  id: string;
+  title: string;
+  tagline: string;
+  date: string;
+  startTime: string;
+  category: "Signature" | "Live" | "Masterclass" | "Launch";
+  description: string;
+  priceFrom: number | null;
+  currency: "AUD";
+  image: string;
+  bookable: boolean;
+}
+
+export const EVENTS: VenueEvent[] = [
+  {
+    id: "EVT_LADIES_NIGHT",
+    title: "Ladies Night",
+    tagline: "Cocktails, beats & glamour",
+    date: "2026-07-23",
+    startTime: "19:00",
+    category: "Signature",
+    description:
+      "Our signature Ladies Night returns — 2-for-1 signature cocktails before 9pm, a live DJ, and a sparkling welcome on arrival. Gather your crew for a night of glamour at the Cozy Box bar.",
+    priceFrom: 0,
+    currency: "AUD",
+    image: "/img/ladies_night.png",
+    bookable: true,
+  },
+  {
+    id: "EVT_DJ_SATURDAYS",
+    title: "Neon Saturdays",
+    tagline: "Resident DJs all night",
+    date: "2026-07-04",
+    startTime: "21:00",
+    category: "Live",
+    description:
+      "Our resident DJs take over the booth with house, disco and R&B until late. Lasers, haze and the full neon treatment.",
+    priceFrom: 2000,
+    currency: "AUD",
+    image: "/img/whats_on.png",
+    bookable: true,
+  },
+  {
+    id: "EVT_PASSPORT_LAUNCH",
+    title: "Cocktail Passport Launch Party",
+    tagline: "Be a founding member",
+    date: "2026-07-11",
+    startTime: "18:30",
+    category: "Launch",
+    description:
+      "Celebrate the launch of the Cozy Box Cocktail Passport. Founding members get a complimentary first stamp, a guided tasting of the new menu, and a Fossey's welcome pour.",
+    priceFrom: 0,
+    currency: "AUD",
+    image: "/img/cocktail_passport.png",
+    bookable: true,
+  },
+  {
+    id: "EVT_MASTERCLASS",
+    title: "Fossey's Cocktail Masterclass",
+    tagline: "Shake, stir & sip",
+    date: "2026-07-18",
+    startTime: "17:00",
+    category: "Masterclass",
+    description:
+      "A hands-on 90-minute masterclass with our head bartender using Fossey's distillery spirits. Make (and drink) three cocktails, with bites to match.",
+    priceFrom: 8900,
+    currency: "AUD",
+    image: "/img/menu_food_drinks.png",
+    bookable: true,
+  },
+];
+
+/** Private Area & Functions — event packages. */
+export interface FunctionPackage {
+  id: string;
+  name: string;
+  blurb: string;
+  priceFrom: number;
+  currency: "AUD";
+  capacity: string;
+  inclusions: string[];
+  image: string;
+  brochureUrl: string;
+}
+
+export const PACKAGES: FunctionPackage[] = [
+  {
+    id: "PKG_BIRTHDAY",
+    name: "Birthday Package",
+    blurb:
+      "Make your birthday unforgettable with a reserved booth, bottle service and a cocktail tower for the table.",
+    priceFrom: 45000,
+    currency: "AUD",
+    capacity: "8–20 guests",
+    inclusions: [
+      "Reserved booth for the night",
+      "Cocktail tower on arrival",
+      "Choice of grazing or canapé menu",
+      "Personalised birthday cocktail",
+    ],
+    image: "/img/private_events.png",
+    brochureUrl: "/brochures/fosseys-distillery-catalogue.pdf",
+  },
+  {
+    id: "PKG_PRIVATE_HIRE",
+    name: "Exclusive Venue Hire",
+    blurb:
+      "Take over the whole Cozy Box for a private event — full bar, DJ booth and dedicated event team.",
+    priceFrom: 250000,
+    currency: "AUD",
+    capacity: "up to 120 guests",
+    inclusions: [
+      "Exclusive use of the venue",
+      "Dedicated bar staff & event manager",
+      "DJ booth & sound system",
+      "Custom cocktail menu with Fossey's spirits",
+    ],
+    image: "/img/hero_club.png",
+    brochureUrl: "/brochures/fosseys-distillery-catalogue.pdf",
+  },
+  {
+    id: "PKG_CORPORATE",
+    name: "Corporate & Functions",
+    blurb:
+      "End-of-year parties, product launches and team nights — flexible spaces and tailored beverage packages.",
+    priceFrom: 90000,
+    currency: "AUD",
+    capacity: "20–80 guests",
+    inclusions: [
+      "Semi-private or full venue options",
+      "Beverage packages or consumption bar",
+      "Canapé & grazing menus",
+      "AV & presentation support",
+    ],
+    image: "/img/whats_on.png",
+    brochureUrl: "/brochures/fosseys-distillery-catalogue.pdf",
+  },
+  {
+    id: "PKG_MASTERCLASS",
+    name: "Private Cocktail Masterclass",
+    blurb:
+      "A guided, hands-on cocktail experience for your group using Fossey's distillery range.",
+    priceFrom: 12000,
+    currency: "AUD",
+    capacity: "6–16 guests",
+    inclusions: [
+      "90-minute guided masterclass",
+      "Three cocktails per guest",
+      "Matching bar bites",
+      "Take-home recipe card",
+    ],
+    image: "/img/cocktail_passport.png",
+    brochureUrl: "/brochures/fosseys-distillery-catalogue.pdf",
+  },
+];

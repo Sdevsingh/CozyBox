@@ -6,7 +6,7 @@ type Filter = "all" | "retail" | "food";
 
 export default function Shop() {
   const [items, setItems] = useState<CatalogItem[]>([]);
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>("retail");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { lines, subtotal, count, add, setQty, clear } = useCart();
@@ -53,109 +53,121 @@ export default function Shop() {
   }
 
   return (
-    <section className="section container">
-      <p className="eyebrow">Online Shop</p>
-      <h2>Distillery products & signature plates</h2>
-      <p className="muted">
-        Powered by Square Catalog, Orders & Payments. Add items to your cart and
-        check out for pickup at Carlton.
-      </p>
-
-      <div style={{ display: "flex", gap: 10, margin: "18px 0" }}>
-        {(["all", "retail", "food"] as Filter[]).map((f) => (
-          <button
-            key={f}
-            className={`btn small ${filter === f ? "" : "ghost"}`}
-            onClick={() => setFilter(f)}
-          >
-            {f === "all" ? "Everything" : f === "retail" ? "Distillery" : "Kitchen"}
-          </button>
-        ))}
-      </div>
-
-      {error && <div className="notice err">{error}</div>}
-      {confirmation && (
-        <div className="notice ok">
-          ✅ Order <strong>{confirmation.orderId}</strong> paid (payment{" "}
-          {confirmation.paymentId}) via <strong>{confirmation.source}</strong>.
-          See you at Carlton!
+    <>
+      <section className="hero" style={{ minHeight: "46vh" }}>
+        <div
+          className="hero-bg"
+          style={{ backgroundImage: "url(/img/shop_bottles.png)" }}
+        />
+        <div className="container hero-content">
+          <p className="eyebrow">Online Shop · Fossey's</p>
+          <h1 style={{ fontSize: "clamp(42px,7vw,76px)" }}>Take it home</h1>
+          <p className="lede">
+            Fossey's distillery spirits and signature plates — order for pickup
+            at Carlton. Powered by Square Catalog, Orders & Payments.
+          </p>
         </div>
-      )}
+      </section>
 
-      <div className="grid cols-2" style={{ alignItems: "start" }}>
-        <div className="grid" style={{ gap: 14 }}>
-          {loading && <p className="spinner">Loading menu…</p>}
-          {visible.map((item) => (
-            <div className="card item" key={item.id}>
-              <div className="item-top">
-                <h3>{item.name}</h3>
-                <span className="price">{formatAUD(item.price)}</span>
-              </div>
-              <p className="muted" style={{ margin: 0 }}>
-                {item.description}
-              </p>
-              <div className="tags">
-                <span className="tag">{item.section}</span>
-                {item.dietary.map((d) => (
-                  <span className="tag" key={d}>
-                    {d}
-                  </span>
-                ))}
-              </div>
-              <div>
-                <button className="btn small" onClick={() => add(item)}>
-                  Add to cart
-                </button>
-              </div>
-            </div>
+      <section className="section container">
+        <div style={{ display: "flex", gap: 10, margin: "0 0 20px" }}>
+          {(["retail", "food", "all"] as Filter[]).map((f) => (
+            <button
+              key={f}
+              className={`btn small ${filter === f ? "" : "ghost"}`}
+              onClick={() => setFilter(f)}
+            >
+              {f === "all" ? "Everything" : f === "retail" ? "Distillery" : "Kitchen"}
+            </button>
           ))}
         </div>
 
-        <div
-          className="card"
-          style={{ position: "sticky", top: 88 }}
-          aria-label="cart"
-        >
-          <h3>Your cart ({count})</h3>
-          {lines.length === 0 && <p className="muted">Your cart is empty.</p>}
-          {lines.map((l) => (
-            <div className="cart-row" key={l.item.id}>
-              <div>
-                <div>{l.item.name}</div>
-                <div className="muted" style={{ fontSize: 13 }}>
-                  {formatAUD(l.item.price)}
+        {error && <div className="notice err">{error}</div>}
+        {confirmation && (
+          <div className="notice ok">
+            ✅ Order <strong>{confirmation.orderId}</strong> paid (payment{" "}
+            {confirmation.paymentId}) via <strong>{confirmation.source}</strong>.
+            See you at Carlton!
+          </div>
+        )}
+
+        <div className="grid cols-2" style={{ alignItems: "start" }}>
+          <div className="grid" style={{ gap: 16 }}>
+            {loading && <p className="spinner">Loading shop…</p>}
+            {visible.map((item) => (
+              <div className="card" key={item.id}>
+                <div className="item-top">
+                  <h3 style={{ margin: 0 }}>{item.name}</h3>
+                  <span className="price">{formatAUD(item.price)}</span>
+                </div>
+                <p className="muted" style={{ margin: "6px 0 10px" }}>
+                  {item.description}
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div className="tags">
+                    <span className="tag">{item.section}</span>
+                    {item.dietary.map((d) => (
+                      <span className="tag" key={d}>
+                        {d}
+                      </span>
+                    ))}
+                  </div>
+                  <button className="btn small" onClick={() => add(item)}>
+                    Add to cart
+                  </button>
                 </div>
               </div>
-              <div className="qty">
-                <button onClick={() => setQty(l.item.id, l.quantity - 1)}>
-                  −
-                </button>
-                <span>{l.quantity}</span>
-                <button onClick={() => setQty(l.item.id, l.quantity + 1)}>
-                  +
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
-          {lines.length > 0 && (
-            <>
-              <div className="totals">
-                <span>Subtotal</span>
-                <span>{formatAUD(subtotal)}</span>
+          <div className="card sticky-side" aria-label="cart">
+            <h3>Your cart ({count})</h3>
+            {lines.length === 0 && <p className="muted">Your cart is empty.</p>}
+            {lines.map((l) => (
+              <div className="cart-row" key={l.item.id}>
+                <div>
+                  <div>{l.item.name}</div>
+                  <div className="muted" style={{ fontSize: 13 }}>
+                    {formatAUD(l.item.price)}
+                  </div>
+                </div>
+                <div className="qty">
+                  <button onClick={() => setQty(l.item.id, l.quantity - 1)}>
+                    −
+                  </button>
+                  <span>{l.quantity}</span>
+                  <button onClick={() => setQty(l.item.id, l.quantity + 1)}>
+                    +
+                  </button>
+                </div>
               </div>
-              <button
-                className="btn"
-                style={{ width: "100%" }}
-                disabled={placing}
-                onClick={checkout}
-              >
-                {placing ? "Processing…" : "Checkout & Pay"}
-              </button>
-            </>
-          )}
+            ))}
+
+            {lines.length > 0 && (
+              <>
+                <div className="totals">
+                  <span>Subtotal</span>
+                  <span>{formatAUD(subtotal)}</span>
+                </div>
+                <button
+                  className="btn"
+                  style={{ width: "100%" }}
+                  disabled={placing}
+                  onClick={checkout}
+                >
+                  {placing ? "Processing…" : "Checkout & Pay"}
+                </button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
