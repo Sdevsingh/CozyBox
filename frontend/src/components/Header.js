@@ -56,8 +56,8 @@ export default function Header() {
                 to={l.to}
                 data-testid={`nav-${l.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
                 className={({ isActive }) =>
-                  `text-[0.74rem] uppercase tracking-[0.22em] transition-colors duration-300 ${
-                    isActive ? "text-amber" : "text-white/70 hover:text-white"
+                  `nav-wipe text-[0.74rem] uppercase tracking-[0.22em] transition-colors duration-300 ${
+                    isActive ? "text-amber active" : "text-white/70 hover:text-white"
                   }`
                 }
               >

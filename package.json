@@ -2,16 +2,11 @@
   "name": "cozybox",
   "version": "0.1.0",
   "private": true,
-  "description": "CozyBox by Fossey's Distillery — website (Online Shop, Table Booking, Plate Pass) backed by Square APIs",
-  "workspaces": [
-    "server",
-    "web"
-  ],
+  "description": "CozyBox by Fossey's Distillery — website backed by Square APIs",
   "scripts": {
-    "dev": "concurrently -n server,web -c blue,magenta \"npm run dev -w server\" \"npm run dev -w web\"",
-    "build": "npm run build -w server && npm run build -w web",
-    "lint": "npm run lint -w server && npm run lint -w web",
-    "start": "npm run start -w server"
+    "dev": "concurrently -n frontend,backend -c magenta,cyan \"cd frontend && PORT=3001 npm start\" \"cd backend && uvicorn server:app --reload --port 4040\"",
+    "frontend": "cd frontend && PORT=3001 npm start",
+    "backend": "cd backend && uvicorn server:app --reload --port 4040"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

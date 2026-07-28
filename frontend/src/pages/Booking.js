@@ -1,21 +1,42 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Plus, Minus } from "lucide-react";
 import { api } from "../lib/api";
 import { blurReveal } from "../lib/motion";
 import GlowButton from "../components/GlowButton";
 
-const empty = { name: "", email: "", phone: "", date: "", time: "", guests: 2, notes: "" };
+const empty = { name: "", email: "", phone: "", date: "", time: "", startAt: "", guests: 2, notes: "" };
+
+// Open dates for the next ~8 weeks (Wed to Sun; closed Mon/Tue) as a date strip.
+const OPEN_DATES = (() => {
+  const out = [];
+  const t = new Date();
+  for (let i = 0; i < 56 && out.length < 24; i++) {
+    const d = new Date(t.getFullYear(), t.getMonth(), t.getDate() + i);
+    const wd = d.getDay();
+    if (wd === 1 || wd === 2) continue; // Mon + Tue closed
+    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    out.push({
+      value,
+      wd: i === 0 ? "Today" : d.toLocaleDateString("en-AU", { weekday: "short" }),
+      day: d.getDate(),
+      mon: d.toLocaleDateString("en-AU", { month: "short" }),
+    });
+  }
+  return out;
+})();
 
 export default function Booking() {
   const [form, setForm] = useState(empty);
   const [slots, setSlots] = useState([]);
+  const [openDay, setOpenDay] = useState(true);
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
     if (!form.date) return;
     api.get("/bookings/availability", { params: { date: form.date } })
-      .then((r) => setSlots(r.data.slots)).catch(() => setSlots([]));
+      .then((r) => { setSlots(r.data.slots); setOpenDay(r.data.open !== false); })
+      .catch(() => { setSlots([]); setOpenDay(true); });
   }, [form.date]);
 
   const submit = async (e) => {
@@ -40,7 +61,7 @@ export default function Booking() {
         <div className="absolute bottom-12 left-12 right-12">
           <p className="eyebrow mb-4">Reservations</p>
           <h2 className="font-display text-5xl leading-tight">Pull up a seat at the Cozy Box.</h2>
-          <p className="text-smoke mt-4 max-w-md">209 Lygon St, Carlton · Wed–Sun. For parties over 12, use Private & Events.</p>
+          <p className="text-smoke mt-4 max-w-md">209 Lygon St, Carlton · Wed to Sun. For parties over 12, use Private & Events.</p>
         </div>
       </div>
 
@@ -64,22 +85,57 @@ export default function Booking() {
                 <input required type="email" placeholder="Email" className={field} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} data-testid="booking-email" />
                 <input required placeholder="Phone" className={field} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} data-testid="booking-phone" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input required type="date" className={field} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value, time: "" })} data-testid="booking-date" />
-                <select className={field} value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} data-testid="booking-guests">
-                  {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n === 1 ? "guest" : "guests"}</option>)}
-                </select>
+              {/* Date — an elegant horizontal date strip */}
+              <div>
+                <p className="text-smoke-dim text-xs uppercase tracking-[0.2em] mb-3">Choose a date</p>
+                <div className="flex gap-2.5 overflow-x-auto scrollbar-none pb-1 -mx-1 px-1" data-testid="booking-dates">
+                  {OPEN_DATES.map((d) => {
+                    const on = form.date === d.value;
+                    return (
+                      <button type="button" key={d.value}
+                        onClick={() => setForm({ ...form, date: d.value, time: "", startAt: "" })}
+                        data-testid={`date-${d.value}`}
+                        className={`shrink-0 w-[62px] rounded-xl border py-3 flex flex-col items-center gap-1 transition-all duration-200 ${on ? "bg-amber text-ink border-amber shadow-[0_8px_24px_-8px_rgba(255,159,28,0.6)]" : "hairline text-white/85 hover:border-amber/50 hover:-translate-y-0.5"}`}>
+                        <span className={`text-[0.56rem] uppercase tracking-[0.14em] ${on ? "text-ink/70" : "text-smoke-dim"}`}>{d.wd}</span>
+                        <span className="font-display text-2xl leading-none">{d.day}</span>
+                        <span className={`text-[0.56rem] uppercase tracking-[0.14em] ${on ? "text-ink/70" : "text-smoke-dim"}`}>{d.mon}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Guests — inline stepper */}
+              <div className="flex items-center justify-between rounded-xl border hairline bg-ink-surface/60 px-4 py-2.5">
+                <span className="text-smoke-dim text-xs uppercase tracking-[0.2em]">Guests</span>
+                <div className="flex items-center gap-4">
+                  <button type="button" aria-label="Fewer guests" onClick={() => setForm({ ...form, guests: Math.max(1, Number(form.guests) - 1) })}
+                    className="w-8 h-8 grid place-items-center rounded-full border hairline text-white hover:border-amber/60 disabled:opacity-40" disabled={Number(form.guests) <= 1}>
+                    <Minus size={15} />
+                  </button>
+                  <span className="w-6 text-center text-lg tabular-nums">{form.guests}</span>
+                  <button type="button" aria-label="More guests" onClick={() => setForm({ ...form, guests: Math.min(12, Number(form.guests) + 1) })}
+                    className="w-8 h-8 grid place-items-center rounded-full border hairline text-white hover:border-amber/60 disabled:opacity-40" disabled={Number(form.guests) >= 12}>
+                    <Plus size={15} />
+                  </button>
+                </div>
               </div>
               {form.date && (
                 <div data-testid="booking-slots">
                   <p className="text-smoke-dim text-xs uppercase tracking-[0.2em] mb-3">Choose a time</p>
-                  <div className="grid grid-cols-4 gap-2">
-                    {slots.map((s) => (
-                      <button type="button" key={s} onClick={() => setForm({ ...form, time: s })}
-                        className={`py-2 rounded-lg text-sm border transition-colors ${form.time === s ? "bg-amber text-ink border-amber" : "hairline text-white/80 hover:border-amber/50"}`}
-                        data-testid={`slot-${s}`}>{s}</button>
-                    ))}
-                  </div>
+                  {!openDay ? (
+                    <p className="text-amber/90 text-sm rounded-lg border border-amber/30 bg-amber/5 px-4 py-3">
+                      We're closed that day. We are open Wed to Sun. Pick another date.
+                    </p>
+                  ) : (
+                    <div className="grid grid-cols-4 gap-2">
+                      {slots.map((s) => (
+                        <button type="button" key={s.startAt} onClick={() => setForm({ ...form, time: s.time, startAt: s.startAt })}
+                          className={`py-2 rounded-lg text-sm border transition-colors ${form.time === s.time ? "bg-amber text-ink border-amber" : "hairline text-white/80 hover:border-amber/50"}`}
+                          data-testid={`slot-${s.time}`}>{s.time}</button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
               <textarea placeholder="Special requests (optional)" rows={3} className={field} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} data-testid="booking-notes" />

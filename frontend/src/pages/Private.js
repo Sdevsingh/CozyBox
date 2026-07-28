@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { api, formatPrice } from "../lib/api";
+import { PACKAGES, formatPrice, LOCATION } from "../data";
 import { fadeUp, stagger, viewport } from "../lib/motion";
 import PageHero from "../components/PageHero";
 import GlowButton from "../components/GlowButton";
@@ -9,25 +9,19 @@ import GlowButton from "../components/GlowButton";
 const empty = { name: "", email: "", phone: "", packageId: "", date: "", guests: "", message: "" };
 
 export default function Private() {
-  const [packages, setPackages] = useState([]);
+  const packages = PACKAGES;
   const [form, setForm] = useState(empty);
   const [status, setStatus] = useState(null);
 
-  useEffect(() => {
-    api.get("/packages").then((r) => setPackages(r.data.packages)).catch(() => {});
-  }, []);
-
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    setStatus("sending");
-    try {
-      const payload = { ...form, guests: form.guests ? Number(form.guests) : null };
-      await api.post("/packages/enquiries", payload);
-      setStatus("done");
-      setForm(empty);
-    } catch {
-      setStatus("error");
-    }
+    const subject = encodeURIComponent(`Private Event Enquiry — ${form.packageId || "General"}`);
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\nPackage: ${form.packageId || "Not specified"}\nDate: ${form.date || "Flexible"}\nGuests: ${form.guests || "TBC"}\n\nMessage:\n${form.message}`
+    );
+    window.location.href = `mailto:${LOCATION.enquiryEmail}?subject=${subject}&body=${body}`;
+    setStatus("done");
+    setForm(empty);
   };
 
   const field = "w-full bg-ink-surface/60 border hairline rounded-xl px-4 py-3 text-white placeholder:text-smoke-dim focus:border-amber/60 focus:outline-none transition-colors";

@@ -69,7 +69,7 @@ export default function SpotlightCursor() {
           marginTop: -4,
           borderRadius: "50%",
           pointerEvents: "none",
-          zIndex: 70,
+          zIndex: 9999, /* above modals/drawers so it's always visible */
           background: "#FF9F1C",
           boxShadow: "0 0 12px rgba(255,159,28,0.9)",
           transition: "width .2s, height .2s",
