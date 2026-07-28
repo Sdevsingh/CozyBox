@@ -52,6 +52,8 @@ MAIL_REPLY_TO = os.environ.get("MAIL_REPLY_TO")  # where customer replies land
 # Absolute URL of the hero image shown at the top of emails. Defaults to the
 # production site; loads once the frontend is live at cozybox.au.
 MAIL_HERO_IMAGE = os.environ.get("MAIL_HERO_IMAGE", "https://cozybox.au/img/real_cocktail.jpg")
+# Logo shown in the email header (falls back to a text wordmark if unset).
+MAIL_LOGO_IMAGE = os.environ.get("MAIL_LOGO_IMAGE", "https://cozybox.au/img/cozybox-logo.png")
 SITE_URL = os.environ.get("SITE_URL", "https://cozybox.au")
 MAPS_URL = "https://www.google.com/maps/search/?api=1&query=" + \
     "209+Lygon+St,+Carlton+VIC+3053"
@@ -89,6 +91,13 @@ def _shell(preheader: str, inner_html: str, hero: bool = True) -> str:
     <img src="{MAIL_HERO_IMAGE}" width="560" alt="Cozy Box by Fossey's Distillery"
       style="display:block;width:100%;max-height:190px;object-fit:cover;border:0" />
   </td></tr>"""
+    logo_html = (
+        f'<img src="{MAIL_LOGO_IMAGE}" alt="Cozy Box" height="46" '
+        f'style="height:46px;display:block;margin:0 auto 6px;border:0" />'
+        if MAIL_LOGO_IMAGE else
+        '<div style="font:600 15px/1 -apple-system,Segoe UI,Roboto,Helvetica,Arial;'
+        'letter-spacing:.34em;text-transform:uppercase;color:#e8b755">COZY BOX</div>'
+    )
     return f"""\
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -98,9 +107,9 @@ def _shell(preheader: str, inner_html: str, hero: bool = True) -> str:
 <tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#141210;border:1px solid #2a2621;border-radius:18px;overflow:hidden">
   <tr><td style="height:3px;background:linear-gradient(90deg,#8a5f1c,#e8b755,#8a5f1c);font-size:0;line-height:0">&nbsp;</td></tr>
-  <tr><td style="padding:30px 40px 22px;text-align:center">
-    <div style="font:600 15px/1 -apple-system,Segoe UI,Roboto,Helvetica,Arial;letter-spacing:.34em;text-transform:uppercase;color:#e8b755">COZY BOX</div>
-    <div style="font:400 11px/1 -apple-system,Segoe UI,Roboto,Helvetica,Arial;letter-spacing:.2em;text-transform:uppercase;color:#7d766c;margin-top:7px">by Fossey's Distillery</div>
+  <tr><td style="padding:28px 40px 18px;text-align:center">
+    {logo_html}
+    <div style="font:400 11px/1 -apple-system,Segoe UI,Roboto,Helvetica,Arial;letter-spacing:.24em;text-transform:uppercase;color:#7d766c;margin-top:8px">by Fossey's Distillery</div>
   </td></tr>{hero_band}
   <tr><td style="padding:30px 40px 34px;color:#d9d2c7;font:400 15px/1.66 -apple-system,Segoe UI,Roboto,Helvetica,Arial">
     {inner_html}
@@ -305,6 +314,7 @@ async def schedule_booking_reminder(*, to, name, date, time, guests, booking_id=
         return {"scheduled": False, "reason": "beyond-window", "at": remind_at.isoformat()}
 
     day_str = start_local.strftime("%A %-d %B")
+    
     time_str = start_local.strftime("%-I:%M %p")
     inner = f"""\
 <h1 style="font:600 22px/1.25 Georgia,serif;color:#f2ede4;margin:0 0 6px">See you soon, {name or 'there'}.</h1>

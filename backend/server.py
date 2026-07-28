@@ -6,7 +6,18 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr, Field
+import re
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
+_AU_PHONE = re.compile(r"^(?:\+?61|0)[2-478]\d{8}$")
+_AU_STATES = {"VIC", "NSW", "QLD", "SA", "WA", "TAS", "NT", "ACT"}
+
+
+def _clean_au_phone(v: str) -> str:
+    s = re.sub(r"[\s()\-.]", "", v or "")
+    if not _AU_PHONE.match(s):
+        raise ValueError("Enter a valid Australian phone number")
+    return s
 
 import content as C
 import square_client as sq
@@ -137,6 +148,18 @@ class BookingIn(BaseModel):
     guests: int = Field(ge=1, le=40)
     notes: str | None = None
 
+    @field_validator("name")
+    @classmethod
+    def _name(cls, v):
+        if len((v or "").strip()) < 2:
+            raise ValueError("Please enter your full name")
+        return v.strip()
+
+    @field_validator("phone")
+    @classmethod
+    def _phone(cls, v):
+        return _clean_au_phone(v)
+
 
 class OrderLine(BaseModel):
     id: str
@@ -154,6 +177,26 @@ class ShippingIn(BaseModel):
     state: str
     postcode: str
     country: str = "AU"
+
+    @field_validator("postcode")
+    @classmethod
+    def _postcode(cls, v):
+        if not re.fullmatch(r"\d{4}", (v or "").strip()):
+            raise ValueError("Enter a valid 4-digit Australian postcode")
+        return v.strip()
+
+    @field_validator("state")
+    @classmethod
+    def _state(cls, v):
+        s = (v or "").strip().upper()
+        if s not in _AU_STATES:
+            raise ValueError("Enter a valid Australian state")
+        return s
+
+    @field_validator("phone")
+    @classmethod
+    def _ship_phone(cls, v):
+        return _clean_au_phone(v) if v else v
 
 
 class OrderIn(BaseModel):

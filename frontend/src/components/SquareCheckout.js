@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ShieldCheck, CreditCard, ExternalLink, Loader2, Truck } from "lucide-react";
 import { api, formatPrice } from "../lib/api";
 import { getConfig, loadSquareSdk } from "../lib/square";
+import { isValidEmail, isValidAuPhone, isValidAuPostcode } from "../lib/validate";
 import GlowButton from "./GlowButton";
 
 /**
@@ -33,12 +34,21 @@ export default function SquareCheckout({ lines, total, onDone }) {
   // call the latest version (avoids stale closures).
   const finishOrder = async (sourceId, { requireEmail = true } = {}) => {
     setError("");
-    if (cfg?.enabled && requireEmail && !buyer.email) {
-      setError("Please add an email for your receipt.");
+    if (cfg?.enabled && requireEmail && !isValidEmail(buyer.email)) {
+      setError("Please add a valid email for your receipt.");
       return;
     }
-    if (!ship.line1 || !ship.suburb || !ship.postcode) {
-      setError("Please add your delivery address (street, suburb, postcode).");
+    // Delivery address validation (bottles ship Australia-wide).
+    if (!ship.line1.trim() || !ship.suburb.trim()) {
+      setError("Please add your delivery street and suburb.");
+      return;
+    }
+    if (!isValidAuPostcode(ship.postcode)) {
+      setError("Enter a valid 4-digit Australian postcode.");
+      return;
+    }
+    if (!isValidAuPhone(ship.phone)) {
+      setError("Enter a valid Australian phone number for delivery.");
       return;
     }
     setStatus("paying");

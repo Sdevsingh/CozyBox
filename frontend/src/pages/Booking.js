@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Check, Plus, Minus } from "lucide-react";
 import { api } from "../lib/api";
 import { blurReveal } from "../lib/motion";
+import { isValidEmail, isValidAuPhone } from "../lib/validate";
 import GlowButton from "../components/GlowButton";
 
 const empty = { name: "", email: "", phone: "", date: "", time: "", startAt: "", guests: 2, notes: "" };
@@ -31,6 +32,16 @@ export default function Booking() {
   const [slots, setSlots] = useState([]);
   const [openDay, setOpenDay] = useState(true);
   const [status, setStatus] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  // Name, email and phone are all required and format-checked (AU phone).
+  const validate = () => {
+    const e = {};
+    if (form.name.trim().length < 2) e.name = "Please enter your full name.";
+    if (!isValidEmail(form.email)) e.email = "Enter a valid email address.";
+    if (!isValidAuPhone(form.phone)) e.phone = "Enter a valid Australian phone number.";
+    return e;
+  };
 
   useEffect(() => {
     if (!form.date) return;
@@ -41,6 +52,9 @@ export default function Booking() {
 
   const submit = async (e) => {
     e.preventDefault();
+    const eObj = validate();
+    if (Object.keys(eObj).length) { setErrors(eObj); setStatus("invalid"); return; }
+    setErrors({});
     if (!form.time) { setStatus("notime"); return; }
     setStatus("sending");
     try {
@@ -80,10 +94,25 @@ export default function Booking() {
                 <p className="eyebrow mb-3">Book a Table</p>
                 <h1 className="text-4xl sm:text-5xl">Reserve your night</h1>
               </div>
-              <input required placeholder="Full name" className={field} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} data-testid="booking-name" />
+              <div>
+                <input required placeholder="Full name" className={field} value={form.name}
+                  onChange={(e) => { setForm({ ...form, name: e.target.value }); if (errors.name) setErrors({ ...errors, name: null }); }}
+                  aria-invalid={!!errors.name} data-testid="booking-name" />
+                {errors.name && <p className="text-red-400 text-xs mt-1.5" data-testid="err-name">{errors.name}</p>}
+              </div>
               <div className="grid grid-cols-2 gap-4">
-                <input required type="email" placeholder="Email" className={field} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} data-testid="booking-email" />
-                <input required placeholder="Phone" className={field} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} data-testid="booking-phone" />
+                <div>
+                  <input required type="email" placeholder="Email" className={field} value={form.email}
+                    onChange={(e) => { setForm({ ...form, email: e.target.value }); if (errors.email) setErrors({ ...errors, email: null }); }}
+                    aria-invalid={!!errors.email} data-testid="booking-email" />
+                  {errors.email && <p className="text-red-400 text-xs mt-1.5" data-testid="err-email">{errors.email}</p>}
+                </div>
+                <div>
+                  <input required type="tel" placeholder="Phone e.g. 04XX XXX XXX" className={field} value={form.phone}
+                    onChange={(e) => { setForm({ ...form, phone: e.target.value }); if (errors.phone) setErrors({ ...errors, phone: null }); }}
+                    aria-invalid={!!errors.phone} data-testid="booking-phone" />
+                  {errors.phone && <p className="text-red-400 text-xs mt-1.5" data-testid="err-phone">{errors.phone}</p>}
+                </div>
               </div>
               {/* Date — an elegant horizontal date strip */}
               <div>
@@ -139,10 +168,11 @@ export default function Booking() {
                 </div>
               )}
               <textarea placeholder="Special requests (optional)" rows={3} className={field} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} data-testid="booking-notes" />
+              {status === "invalid" && <p className="text-red-400 text-sm">Please fix the highlighted fields above.</p>}
               {status === "notime" && <p className="text-amber text-sm">Please pick a time slot.</p>}
               {status === "error" && <p className="text-red-400 text-sm">Something went wrong. Please try again.</p>}
               <GlowButton type="submit" className="w-full" data-testid="booking-submit">{status === "sending" ? "Sending…" : "Request Table"}</GlowButton>
-              <p className="text-smoke-dim text-xs text-center pt-2">Confirmations & live availability move to Square Bookings in Phase 2.</p>
+              <p className="text-smoke-dim text-xs text-center pt-2">You'll get an instant email confirmation with a calendar invite.</p>
             </form>
           )}
         </div>
