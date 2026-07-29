@@ -183,11 +183,14 @@ async def search_availability(start_at_utc_iso, end_at_utc_iso):
 async def _upsert_customer(name, email, phone):
     given, *rest = (name or "Guest").split(" ", 1)
     family = rest[0] if rest else ""
+    # We deliberately DON'T store the guest's email on the Square customer, so
+    # Square never emails them — our branded Resend email is the only guest-facing
+    # confirmation. The email is still kept in the booking note (below) for staff
+    # and in our own database.
     body = {
         "idempotency_key": str(uuid.uuid4()),
         "given_name": given,
         "family_name": family,
-        "email_address": email,
         "phone_number": phone,
     }
     data = await _request("POST", "/v2/customers", body)
@@ -202,7 +205,7 @@ async def create_booking(*, start_at, name, email, phone, guests, notes):
     }
     if SERVICE_VARIATION_VERSION:
         segment["service_variation_version"] = int(SERVICE_VARIATION_VERSION)
-    note = f"Party of {guests}." + (f" {notes}" if notes else "")
+    note = f"Party of {guests}. Booked online · guest email: {email}." + (f" Notes: {notes}" if notes else "")
     body = {
         "idempotency_key": str(uuid.uuid4()),
         "booking": {
