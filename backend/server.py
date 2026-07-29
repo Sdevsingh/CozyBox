@@ -132,21 +132,21 @@ async def get_reviews():
 
 # ── Submissions (stored in Mongo) ──
 class ContactIn(BaseModel):
-    name: str
+    name: str = Field(max_length=120)
     email: EmailStr
-    message: str
-    phone: str | None = None
+    message: str = Field(max_length=4000)
+    phone: str | None = Field(default=None, max_length=24)
 
 
 class BookingIn(BaseModel):
-    name: str
+    name: str = Field(max_length=120)
     email: EmailStr
-    phone: str
-    date: str
-    time: str
-    startAt: str | None = None  # RFC3339 slot start (required when Square Bookings is live)
+    phone: str = Field(max_length=24)
+    date: str = Field(max_length=10)
+    time: str = Field(max_length=8)
+    startAt: str | None = Field(default=None, max_length=40)  # RFC3339 slot start
     guests: int = Field(ge=1, le=40)
-    notes: str | None = None
+    notes: str | None = Field(default=None, max_length=1000)
 
     @field_validator("name")
     @classmethod
@@ -162,20 +162,20 @@ class BookingIn(BaseModel):
 
 
 class OrderLine(BaseModel):
-    id: str
-    name: str
-    price: int  # cents
+    id: str = Field(max_length=80)
+    name: str = Field(max_length=200)
+    price: int  # cents — informational only; server re-prices from the catalog
     qty: int = Field(ge=1, le=99)
 
 
 class ShippingIn(BaseModel):
-    name: str | None = None
-    phone: str | None = None
-    line1: str
-    line2: str | None = None
-    suburb: str
-    state: str
-    postcode: str
+    name: str | None = Field(default=None, max_length=120)
+    phone: str | None = Field(default=None, max_length=24)
+    line1: str = Field(max_length=200)
+    line2: str | None = Field(default=None, max_length=200)
+    suburb: str = Field(max_length=100)
+    state: str = Field(max_length=10)
+    postcode: str = Field(max_length=4)
     country: str = "AU"
 
     @field_validator("postcode")
@@ -208,13 +208,13 @@ class OrderIn(BaseModel):
 
 
 class EnquiryIn(BaseModel):
-    name: str
+    name: str = Field(max_length=120)
     email: EmailStr
-    phone: str
-    packageId: str | None = None
-    date: str | None = None
-    guests: int | None = None
-    message: str | None = None
+    phone: str = Field(max_length=24)
+    packageId: str | None = Field(default=None, max_length=80)
+    date: str | None = Field(default=None, max_length=10)
+    guests: int | None = Field(default=None, ge=1, le=500)
+    message: str | None = Field(default=None, max_length=4000)
 
 
 async def _save(collection: str, payload: dict):
@@ -285,11 +285,39 @@ async def create_booking(body: BookingIn):
             "message": "Booking request received. We'll confirm by email shortly."}
 
 
+# Authoritative retail prices (cents), keyed by id and lowercased name. Orders
+# are ALWAYS re-priced from this — a tampered client price can never be charged.
+_PRICE_BY_ID = {i["id"]: i["price"] for i in C.CATALOG if i.get("price")}
+_PRICE_BY_NAME = {i["name"].strip().lower(): i["price"] for i in C.CATALOG if i.get("price")}
+
+
+async def _trusted_price(line: OrderLine):
+    """Trusted unit price (cents) for a cart line: live Square catalog first,
+    then the static catalog. None when the item is unknown/unpurchasable."""
+    if sq.enabled:
+        try:
+            for it in await _square_retail():
+                same = it.get("id") == line.id or it.get("name", "").strip().lower() == line.name.strip().lower()
+                if same and it.get("price"):
+                    return int(it["price"])
+        except sq.SquareError:
+            pass
+    return _PRICE_BY_ID.get(line.id) or _PRICE_BY_NAME.get(line.name.strip().lower())
+
+
 @api.post("/orders")
 async def create_order(body: OrderIn):
     """Create a Square Order for the liquor cart and take card payment."""
-    total = sum(l.price * l.qty for l in body.lines)
-    lines = [l.model_dump() for l in body.lines]
+    if not body.lines:
+        raise HTTPException(400, "Your cart is empty.")
+    # Re-price every line server-side — never trust the price sent by the client.
+    lines = []
+    for l in body.lines:
+        price = await _trusted_price(l)
+        if not price:
+            raise HTTPException(400, f"Item unavailable for online purchase: {l.name}")
+        lines.append({"id": l.id, "name": l.name, "price": int(price), "qty": l.qty})
+    total = sum(x["price"] * x["qty"] for x in lines)
     shipping = body.shipping.model_dump() if body.shipping else None
     if shipping:
         shipping["email"] = body.email  # recipient email for the shipment record
@@ -443,3 +471,42 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Basic abuse protection + security headers ──────────────
+# Per-IP sliding-window rate limits on the public write endpoints, a request
+# body cap, and hardening headers on every response. Keeps a spammer from
+# email-bombing bookings or hammering the payment endpoint.
+import time as _time
+from collections import defaultdict
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+_RL_WINDOW = 60.0
+_RL_MAX = {"/api/bookings": 6, "/api/contact": 5, "/api/orders": 12, "/api/packages/enquiries": 5}
+_RL_HITS: dict = defaultdict(list)
+_MAX_BODY = 64 * 1024  # 64 KB is plenty for our JSON payloads
+
+
+@app.middleware("http")
+async def _guard(request: Request, call_next):
+    path = request.url.path
+    if request.method == "POST" and path in _RL_MAX:
+        cl = request.headers.get("content-length")
+        if cl and cl.isdigit() and int(cl) > _MAX_BODY:
+            return JSONResponse({"detail": "Payload too large."}, status_code=413)
+        fwd = request.headers.get("x-forwarded-for", "")
+        ip = fwd.split(",")[0].strip() or (request.client.host if request.client else "unknown")
+        now = _time.time()
+        key = (ip, path)
+        hits = [t for t in _RL_HITS[key] if now - t < _RL_WINDOW]
+        if len(hits) >= _RL_MAX[path]:
+            return JSONResponse({"detail": "Too many requests — please slow down and try again shortly."}, status_code=429)
+        hits.append(now)
+        _RL_HITS[key] = hits
+    resp = await call_next(request)
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    resp.headers["X-Frame-Options"] = "DENY"
+    resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    resp.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    resp.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    return resp
