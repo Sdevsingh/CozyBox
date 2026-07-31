@@ -34,7 +34,7 @@ export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, 
             >
               <div className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-6 pointer-events-none">
                 <motion.div
-                  className="pointer-events-auto relative w-full max-w-4xl max-h-[92vh] overflow-hidden flex flex-col
+                  className="pointer-events-auto relative w-full max-w-4xl max-h-[92vh] overflow-y-auto overscroll-contain
                     rounded-3xl border border-amber/25 bg-ink-surface
                     shadow-[0_30px_120px_-20px_rgba(0,0,0,0.9)]"
                   initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -47,9 +47,9 @@ export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, 
                     Review the bottles in your order and pay securely with Apple Pay, Google Pay, Afterpay or card.
                   </Dialog.Description>
 
-                  <div className="grid md:grid-cols-2 grid-rows-[minmax(0,1fr)] flex-1 min-h-0 overflow-hidden">
-                    {/* ── Order summary (bottles stay visible) ── */}
-                    <div className="hidden md:flex flex-col min-h-0 overflow-hidden bg-ink/50 border-r hairline">
+                  <div className="grid md:grid-cols-2 md:items-start">
+                    {/* ── Order summary (sticky so bottles stay visible while the card scrolls) ── */}
+                    <div className="hidden md:flex flex-col bg-ink/50 border-r hairline md:sticky md:top-0 md:max-h-[92vh] overflow-hidden">
                       <div className="p-7 border-b hairline shrink-0">
                         <p className="eyebrow mb-1">Your order</p>
                         <h2 className="text-2xl">The Cellar</h2>
@@ -90,8 +90,8 @@ export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, 
                       </div>
                     </div>
 
-                    {/* ── Payment ── */}
-                    <div className="flex flex-col min-h-0 overflow-y-auto">
+                    {/* ── Payment (flows in the card's own scroll) ── */}
+                    <div className="flex flex-col">
                       <div className="p-6 sm:p-8">
                         {/* Compact summary on mobile (left panel is hidden) */}
                         <div className="md:hidden mb-5 flex items-center justify-between rounded-xl border hairline bg-ink/50 px-4 py-3">
