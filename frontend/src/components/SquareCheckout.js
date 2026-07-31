@@ -222,8 +222,8 @@ export default function SquareCheckout({ lines, total, onDone }) {
         <div className="grid grid-cols-2 gap-2">
           <input placeholder="Apt / unit (optional)" className={field} value={ship.line2}
             onChange={(e) => setShip({ ...ship, line2: e.target.value })} autoComplete="address-line2" />
-          <input placeholder="Phone (for delivery)" className={field} value={ship.phone}
-            onChange={(e) => setShip({ ...ship, phone: e.target.value })} autoComplete="tel" />
+          <input placeholder="Phone (for delivery)" inputMode="tel" className={field} value={ship.phone}
+            onChange={(e) => setShip({ ...ship, phone: e.target.value.replace(/[^\d+\s()-]/g, "") })} autoComplete="tel" />
         </div>
         <div className="grid grid-cols-[1fr_auto_auto] gap-2">
           <input placeholder="Suburb" className={field} value={ship.suburb}
@@ -232,8 +232,8 @@ export default function SquareCheckout({ lines, total, onDone }) {
             onChange={(e) => setShip({ ...ship, state: e.target.value })} data-testid="checkout-state" aria-label="State">
             {["VIC", "NSW", "QLD", "SA", "WA", "TAS", "NT", "ACT"].map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <input placeholder="Postcode" inputMode="numeric" className={`${field} w-24`} value={ship.postcode}
-            onChange={(e) => setShip({ ...ship, postcode: e.target.value })} data-testid="checkout-postcode" autoComplete="postal-code" />
+          <input placeholder="Postcode" inputMode="numeric" maxLength={4} className={`${field} w-24`} value={ship.postcode}
+            onChange={(e) => setShip({ ...ship, postcode: e.target.value.replace(/\D/g, "").slice(0, 4) })} data-testid="checkout-postcode" autoComplete="postal-code" />
         </div>
       </div>
 

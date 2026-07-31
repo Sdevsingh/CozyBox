@@ -43,6 +43,17 @@ export default function Booking() {
     return e;
   };
 
+  // Validate a single field when the user leaves it — but don't nag on empty
+  // fields until they actually submit.
+  const blurCheck = (name, value) => {
+    if (!value) return;
+    let msg = null;
+    if (name === "name" && value.trim().length < 2) msg = "Please enter your full name.";
+    if (name === "email" && !isValidEmail(value)) msg = "Enter a valid email address.";
+    if (name === "phone" && !isValidAuPhone(value)) msg = "Enter a valid Australian phone number.";
+    setErrors((prev) => ({ ...prev, [name]: msg }));
+  };
+
   useEffect(() => {
     if (!form.date) return;
     api.get("/bookings/availability", { params: { date: form.date } })
@@ -97,19 +108,22 @@ export default function Booking() {
               <div>
                 <input required placeholder="Full name" className={field} value={form.name}
                   onChange={(e) => { setForm({ ...form, name: e.target.value }); if (errors.name) setErrors({ ...errors, name: null }); }}
+                  onBlur={(e) => blurCheck("name", e.target.value)}
                   aria-invalid={!!errors.name} data-testid="booking-name" />
                 {errors.name && <p className="text-red-400 text-xs mt-1.5" data-testid="err-name">{errors.name}</p>}
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <input required type="email" placeholder="Email" className={field} value={form.email}
+                  <input required type="email" inputMode="email" placeholder="Email" className={field} value={form.email}
                     onChange={(e) => { setForm({ ...form, email: e.target.value }); if (errors.email) setErrors({ ...errors, email: null }); }}
+                    onBlur={(e) => blurCheck("email", e.target.value)}
                     aria-invalid={!!errors.email} data-testid="booking-email" />
                   {errors.email && <p className="text-red-400 text-xs mt-1.5" data-testid="err-email">{errors.email}</p>}
                 </div>
                 <div>
-                  <input required type="tel" placeholder="Phone e.g. 04XX XXX XXX" className={field} value={form.phone}
-                    onChange={(e) => { setForm({ ...form, phone: e.target.value }); if (errors.phone) setErrors({ ...errors, phone: null }); }}
+                  <input required type="tel" inputMode="tel" placeholder="Phone e.g. 04XX XXX XXX" className={field} value={form.phone}
+                    onChange={(e) => { const v = e.target.value.replace(/[^\d+\s()-]/g, ""); setForm({ ...form, phone: v }); if (errors.phone) setErrors({ ...errors, phone: null }); }}
+                    onBlur={(e) => blurCheck("phone", e.target.value)}
                     aria-invalid={!!errors.phone} data-testid="booking-phone" />
                   {errors.phone && <p className="text-red-400 text-xs mt-1.5" data-testid="err-phone">{errors.phone}</p>}
                 </div>
