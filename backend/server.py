@@ -50,11 +50,15 @@ def now_iso():
 
 
 # ── Content (static; Square swaps catalog later) ──
+BUILD = "2026-07-31-noemail"  # bump on each deploy to verify what's live
+
+
 @api.get("/health")
 async def health():
     return {
         "status": "ok",
         "service": "cozybox",
+        "build": BUILD,
         "square": "live" if sq.enabled else "mock",
         "bookings": "square" if sq.bookings_enabled else "mock",
     }
