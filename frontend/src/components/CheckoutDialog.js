@@ -47,7 +47,7 @@ export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, 
                     Review the bottles in your order and pay securely with Apple Pay, Google Pay, Afterpay or card.
                   </Dialog.Description>
 
-                  <div className="grid md:grid-cols-2 flex-1 min-h-0 overflow-hidden">
+                  <div className="grid md:grid-cols-2 grid-rows-[minmax(0,1fr)] flex-1 min-h-0 overflow-hidden">
                     {/* ── Order summary (bottles stay visible) ── */}
                     <div className="hidden md:flex flex-col min-h-0 overflow-hidden bg-ink/50 border-r hairline">
                       <div className="p-7 border-b hairline shrink-0">
