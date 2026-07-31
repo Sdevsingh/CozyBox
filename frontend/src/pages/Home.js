@@ -230,7 +230,7 @@ function Intro() {
    DARK section
 ───────────────────────────────────────── */
 const PANELS = [
-  { to: "/menu", n: "01", label: "The Menu", img: "/img/real_cocktail.jpg", copy: "Indian inspired tapas & signature cocktails, built for the table." },
+  { to: "/menu", n: "01", label: "The Menu", img: "/img/food6.jpg", copy: "Indian inspired tapas & signature cocktails, built for the table." },
   { to: "/shop", n: "02", label: "The Cellar", img: "/img/shop_bottles.jpg", copy: "Fossey's small batch spirits. Gin, vodka, whisky, rum & the Indian Series." },
   { to: "/whats-on", n: "03", label: "What's On", img: "/img/whats_on.jpg", copy: "Ladies Night, resident DJs, launch parties & masterclasses." },
   { to: "/private", n: "04", label: "Private & Events", img: "/img/private_events.jpg", copy: "Booths, functions, corporate nights & exclusive venue hire." },
