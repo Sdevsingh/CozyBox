@@ -299,19 +299,20 @@ function buildReel() {
     sub: e.tagline,
     img: e.image,
     badge: e.category,
-    meta: fmtReelDate(e.date),
+    meta: e.recurring || (e.date ? fmtReelDate(e.date) : ""),
     to: "/whats-on",
     cta: e.bookable ? "RSVP" : "Details",
   }));
+  const reelCocktailImgs = ["/img/cocktail-1.jpg", "/img/cocktail-3.png", "/img/food7.jpg"];
   const cocktails = CATALOG
     .filter((i) => i.category === "drink")
     .slice(0, 6)
-    .map((c) => ({
+    .map((c, i) => ({
       kind: "cocktail",
       id: c.id,
       title: c.name,
       sub: c.description,
-      img: c.image || (c.spirit === "Whisky" ? "/img/real_still.jpg" : "/img/real_cocktail.jpg"),
+      img: c.image || reelCocktailImgs[i % reelCocktailImgs.length],
       badge: c.spirit || "Signature",
       meta: formatPrice(c.price),
       to: "/menu",
@@ -408,7 +409,10 @@ function TheReel() {
    SPIRITS STAGGER GRID
    LIGHT section
 ───────────────────────────────────────── */
+// Featured on the homepage — the bottles we have real packshots for.
+const HOME_FEATURED = ["GIN_ORIGINAL", "GIN_DESERT_LIME", "GIN_NAVAL", "WHISKY_SINGLE_MALT"];
 function Spirits() {
+  const featured = HOME_FEATURED.map((id) => SPIRITS.find((s) => s.id === id)).filter(Boolean);
   return (
     <section className="py-28 sm:py-36 section-light">
       <div className="mx-auto max-w-[1500px] px-6 sm:px-10">
@@ -418,7 +422,7 @@ function Spirits() {
         </Reveal>
 
         <StaggerGrid className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={90} slideY={20}>
-          {SPIRITS.slice(0, 4).map((s) => (
+          {featured.map((s) => (
             <TiltCard key={s.id} className="h-full">
               <Link
                 to="/shop"
@@ -430,7 +434,7 @@ function Spirits() {
                     src={s.image || "/img/shop_bottles.jpg"}
                     alt={s.name}
                     onError={(e) => { if (!e.currentTarget.src.includes("shop_bottles")) e.currentTarget.src = "/img/shop_bottles.jpg"; }}
-                    className="h-full w-full object-cover opacity-95 group-hover:scale-110 transition-transform duration-700"
+                    className="h-full w-full object-contain p-3 opacity-95 group-hover:scale-110 transition-transform duration-700"
                   />
                   <span className="card-shine" />
                 </div>
