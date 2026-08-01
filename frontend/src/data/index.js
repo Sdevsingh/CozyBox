@@ -202,6 +202,7 @@ export const CATALOG = [
     section: "Signature Cocktails",
     dietary: [],
     spirit: "Rum",
+    image: "/img/cocktail-1.jpg",
   },
   {
     id: "DRK_CHILLI_MARG",
@@ -212,6 +213,7 @@ export const CATALOG = [
     section: "Signature Cocktails",
     dietary: [],
     spirit: "Gin",
+    image: "/img/cocktail-3.png",
   },
   {
     id: "DRK_BLOOD_ORANGE_SPRITZ",
@@ -441,7 +443,7 @@ export const SPIRITS = [
     price: 8500,
     category: "retail",
     section: "Gin",
-    image: "/img/bottle_original_gin.jpg",
+    image: "/img/original-gin-min.png",
     badge: "Flagship",
   },
   {
@@ -455,7 +457,7 @@ export const SPIRITS = [
     price: null,
     category: "retail",
     section: "Gin",
-    image: "/img/shop_bottles.jpg",
+    image: "/img/desert-lime-gin-min.png",
   },
   {
     id: "GIN_NAVAL",
@@ -468,7 +470,7 @@ export const SPIRITS = [
     price: 9500,
     category: "retail",
     section: "Gin",
-    image: "/img/real_still.jpg",
+    image: "/img/navel-strength-gin-min.png",
     badge: "High Proof",
   },
   {
@@ -590,7 +592,7 @@ export const SPIRITS = [
     price: 6000,
     category: "retail",
     section: "Vodka",
-    image: "/img/real_cocktail.jpg",
+    image: "/img/blood-orange.png",
     badge: "Best Seller",
   },
 
@@ -606,7 +608,7 @@ export const SPIRITS = [
     price: 16000,
     category: "retail",
     section: "Whisky",
-    image: "/img/real_still.jpg",
+    image: "/img/singlemalt1.png",
   },
   {
     id: "WHISKY_PEATED",
@@ -945,7 +947,7 @@ export const EVENTS = [
     highlights: ["Cocktail jug", "Bao", "Skewers", "Shared platter"],
     priceFrom: 4900,
     priceUnit: "to share",
-    image: "/img/event_friends_flight.jpg",
+    image: "/img/friends-flight.jpg",
     bookable: true,
   },
   {
