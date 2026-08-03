@@ -94,10 +94,10 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
                 >
                   <div className="grid sm:grid-cols-[0.92fr_1.08fr]">
                     {/* ── Imagery ── */}
-                    <div className="relative aspect-[4/5] sm:aspect-auto sm:min-h-[560px] overflow-hidden bg-ink">
+                    <div className={`relative aspect-[4/5] sm:aspect-auto sm:min-h-[560px] overflow-hidden ${spirit.packshot ? "bg-gradient-to-b from-white/[0.07] via-ink to-ink" : "bg-ink"}`}>
                       <img src={spirit.image || "/img/shop_bottles.jpg"} alt={`Fossey's ${spirit.name}`}
                         onError={(e) => { if (!e.currentTarget.src.includes("shop_bottles")) e.currentTarget.src = "/img/shop_bottles.jpg"; }}
-                        className="h-full w-full object-cover" />
+                        className={`h-full w-full ${spirit.packshot ? "object-contain p-8" : "object-cover"}`} />
                       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent" />
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent to-ink-surface/30 hidden sm:block" />
                       {spirit.badge && (

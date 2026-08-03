@@ -170,10 +170,10 @@ export default function Shop() {
                       data-testid={`product-${it.id}`}
                       className="glow-ring group flex flex-col rounded-2xl border hairline bg-ink-surface/40 overflow-hidden hover:border-amber/40 transition-colors"
                     >
-                      <button onClick={() => setActive(it)} className="relative block aspect-[4/5] overflow-hidden bg-ink text-left" aria-label={`Quick view ${it.name}`}>
+                      <button onClick={() => setActive(it)} className={`relative block aspect-[4/5] overflow-hidden text-left ${it.packshot ? "bg-gradient-to-b from-white/[0.07] via-ink to-ink" : "bg-ink"}`} aria-label={`Quick view ${it.name}`}>
                         <img src={it.image || "/img/shop_bottles.jpg"} alt={it.name} loading="lazy" decoding="async"
                           onError={(e) => { if (!e.currentTarget.src.includes("shop_bottles")) e.currentTarget.src = "/img/shop_bottles.jpg"; }}
-                          className="h-full w-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
+                          className={`h-full w-full group-hover:scale-105 transition-transform duration-700 ${it.packshot ? "object-contain p-6" : "object-cover opacity-90"}`} />
                         <span className="absolute inset-0 flex items-center justify-center bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity">
                           <span className="inline-flex items-center gap-2 rounded-full bg-ink/70 border border-amber/40 text-white text-[0.66rem] uppercase tracking-[0.18em] px-4 py-2">
                             <Eye size={14} className="text-amber" /> Quick View

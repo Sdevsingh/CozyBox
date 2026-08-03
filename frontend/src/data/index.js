@@ -444,6 +444,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Gin",
     image: "/img/original-gin-min.png",
+    packshot: true,
     badge: "Flagship",
   },
   {
@@ -458,6 +459,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Gin",
     image: "/img/desert-lime-gin-min.png",
+    packshot: true,
   },
   {
     id: "GIN_NAVAL",
@@ -471,6 +473,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Gin",
     image: "/img/navel-strength-gin-min.png",
+    packshot: true,
     badge: "High Proof",
   },
   {
@@ -593,6 +596,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Vodka",
     image: "/img/blood-orange.png",
+    packshot: true,
     badge: "Best Seller",
   },
 
@@ -609,6 +613,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Whisky",
     image: "/img/singlemalt1.png",
+    packshot: true,
   },
   {
     id: "WHISKY_PEATED",
