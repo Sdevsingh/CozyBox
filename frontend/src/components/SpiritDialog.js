@@ -84,7 +84,7 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
             >
               <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-6 pointer-events-none">
                 <motion.div
-                  className="pointer-events-auto relative w-full max-w-4xl max-h-[90vh] overflow-y-auto
+                  className="pointer-events-auto relative w-full max-w-4xl max-h-[90vh] overflow-y-auto overscroll-contain
                     rounded-3xl border border-amber/25 bg-ink-surface
                     shadow-[0_30px_120px_-20px_rgba(0,0,0,0.9)]"
                   initial={{ opacity: 0, scale: 0.94, y: 24 }}
@@ -92,14 +92,20 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
                   exit={{ opacity: 0, scale: 0.96, y: 12 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  <div className="grid sm:grid-cols-[0.92fr_1.08fr]">
+                  <div className="grid sm:grid-cols-[0.85fr_1.15fr] sm:items-stretch">
                     {/* ── Imagery ── */}
-                    <div className={`relative aspect-[4/5] sm:aspect-auto sm:min-h-[560px] overflow-hidden ${spirit.packshot ? "bg-gradient-to-b from-white/[0.07] via-ink to-ink" : "bg-ink"}`}>
+                    <div className={`relative overflow-hidden flex items-center justify-center aspect-[4/5] sm:aspect-auto sm:min-h-[420px] ${spirit.packshot ? "bg-gradient-to-b from-white/[0.06] via-ink to-ink" : "bg-ink"}`}>
                       <img src={spirit.image || "/img/shop_bottles.jpg"} alt={`Fossey's ${spirit.name}`}
                         onError={(e) => { if (!e.currentTarget.src.includes("shop_bottles")) e.currentTarget.src = "/img/shop_bottles.jpg"; }}
-                        className={`h-full w-full ${spirit.packshot ? "object-contain p-8" : "object-cover"}`} />
-                      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-ink-surface/30 hidden sm:block" />
+                        className={spirit.packshot
+                          ? "max-h-[340px] w-auto object-contain drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
+                          : "absolute inset-0 h-full w-full object-cover"} />
+                      {!spirit.packshot && (
+                        <>
+                          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-ink-surface/30 hidden sm:block" />
+                        </>
+                      )}
                       {spirit.badge && (
                         <span className="absolute top-5 left-5 rounded-full neon-pill text-[0.58rem] uppercase tracking-[0.2em] px-3 py-1.5">
                           {spirit.badge}
@@ -112,7 +118,7 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
                     </div>
 
                     {/* ── Details ── */}
-                    <div className="p-7 sm:p-9 flex flex-col">
+                    <div className="p-6 sm:p-8 flex flex-col">
                       <p className="text-[0.62rem] uppercase tracking-[0.25em] text-amber/80 mb-2">
                         Fossey's Distillery · {spirit.section}
                       </p>
