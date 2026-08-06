@@ -292,145 +292,105 @@ export const CATALOG = [
   },
 ];
 
-// ─── THE COZY BOX MENU (dine-in, from the house menu) ─────
-// Prices are dine-in menu prices in AUD dollars. `star` = staff pick,
-// `distiller` = distiller's choice. Dietary: V, DF, GF, GFO, DFO, VO.
+// ─── THE COZY BOX MENU (dine-in — Lunch & Dinner) ────────
 
 export const MENU_LEGEND = [
   { code: "V", label: "Vegetarian" },
+  { code: "GF", label: "Gluten Free" },
   { code: "DF", label: "Dairy Free" },
-  { code: "GFO", label: "Gluten Free Option" },
   { code: "DFO", label: "Dairy Free Option" },
-  { code: "VO", label: "Vegetarian Option" },
+  { code: "VEGAN", label: "Vegan" },
 ];
 
-// Signature house gin tasting flight — the heart of the menu.
-export const GIN_FLIGHT = {
-  eyebrow: "Taste · Sip · Discover",
-  title: "Choose Any 3 House Gins",
-  note: "11+ gin flavours · house distilled, small batch",
-  price: 15,
-  flavours: [
-    "Original", "Botanical", "Desert Lime", "Chilli", "Naval Strength",
-    "Kaffir Leaf", "Hot Toddy", "Hot Cross Bun", "Mango",
-    "Jamun · Indian Berries", "Masala Cumin", "Rose",
+export const LUNCH_MENU = {
+  label: "Lunch",
+  sections: [
+    {
+      label: "Main Meals",
+      items: [
+        { name: "Cheesy Stuffed Chicken Schnitzels", desc: "Deep fried, crumbed chicken breast stuffed with cheese and spinach. Served with chips and salad.", price: 18 },
+        { name: "Fish & Chips", desc: "Golden crisp battered fish. Served with chips and salad.", price: 18 },
+        { name: "Kabab Platter", desc: "Beef kabab, lamb kabab, flat bread, pickle, garlic dip. Served with chips.", price: 18, diet: ["GFO", "DFO"] },
+        { name: "Grilled Chicken Breast", desc: "Flat bread, pickle, garlic dip. Served with chips.", price: 18, diet: ["GFO", "DFO"] },
+        { name: "Pork Belly Salad", desc: "Spinach, onion, cherry tomato, cucumber, carrot, mint, coriander, chilli and Asian dressing.", price: 18, diet: ["GF"] },
+        { name: "Crispy Calamari", desc: "Cous cous, onion, cherry tomato, parsley, cucumber and vinaigrette dressing.", price: 18, diet: ["GF"] },
+        { name: "Vegan Asian Salad", desc: "Grilled soy, spinach, onion, cherry tomato, cucumber, carrot, mint, coriander, chilli and Asian dressing.", price: 21, diet: ["DF", "GF", "VEGAN"] },
+        { name: "Vegan Cous Cous Salad", desc: "Roasted soy, cous cous pearls, cherry tomatoes, onion, cucumber, parsley and lemon vinaigrette.", price: 21, diet: ["DF", "GF", "VEGAN"] },
+      ],
+    },
+    {
+      label: "Burgers",
+      note: "All served with chips and ketchup.",
+      items: [
+        { name: "Chilli Chicken Burger", desc: "Pan fried chicken, bacon, tomato, lettuce, aioli, sriracha on brioche bun.", price: 18 },
+        { name: "Beef Burger", desc: "100% beef patty, bacon, tomato, lettuce, mustard, garlic sauce on brioche bun.", price: 18 },
+        { name: "Lamb Burger", desc: "Lamb patty, bacon, tomato, lettuce, relish on brioche bun.", price: 18 },
+        { name: "Pulled Pork Burger", desc: "Pulled pork, coleslaw, creamy barbecue sauce on brioche bun.", price: 18 },
+        { name: "Veg Burger", desc: "Potato patty, tomato, lettuce, aioli on brioche bun.", price: 18 },
+      ],
+    },
+    {
+      label: "Sides",
+      items: [
+        { name: "Bowl of Chips", desc: "", price: 10 },
+        { name: "Cheezy Chilli Fries", desc: "", price: 15 },
+      ],
+    },
+    {
+      label: "Add Ons",
+      items: [
+        { name: "Gin Tasting Platter", desc: "Choose any 3 in-house distilled gin flavours.", price: 15, star: true },
+      ],
+    },
   ],
 };
 
-// Must try pours singled out on the menu.
-export const MUST_TRY = [
-  { name: "Monsoon Drop", note: "Inspired by the first rain", abv: "40%", kind: "Single Malt Whiskey" },
-  { name: "Ikka", note: "Lead. Never Follow.", abv: "60%", kind: "Single Malt Whiskey" },
-];
-
-// Cocktail pitchers, poured to share.
-export const PITCHERS = {
-  price: 25,
-  items: [
-    { name: "Mango Pash", build: "Fossey's mango gin, passionfruit, pineapple" },
-    { name: "Masala Cumin Spritz", build: "Fossey's masala gin, lemon, lemonade" },
-    { name: "Movie Night", build: "Fossey's popcorn vodka, espresso & cola" },
-    { name: "Jamun Mojito", build: "Fossey's jamun gin, mint, lemon & lemonade" },
-    { name: "Chilli Elderflower Margarita", build: "Fossey's chilli gin, kaffir gin, elderflower" },
+export const DINNER_MENU = {
+  label: "Dinner",
+  sections: [
+    {
+      label: "Tapas",
+      items: [
+        { name: "Slider", desc: "Potato | Pulled Pork", price: 8 },
+        { name: "Eggplant Nachos", desc: "Oregano crusted eggplant, sour cream, chilli jam.", price: 16, diet: ["V", "GF", "DFO"] },
+        { name: "Avocado Chaat", desc: "Avocado, pomegranate, sweet yogurt, tamarind, potato.", price: 16, diet: ["V", "GF"] },
+        { name: "Roasted Paneer Tikka", desc: "Spinach marinated paneer, slaw.", price: 18, diet: ["V", "GF"] },
+        { name: "Biryani Arancini", desc: "Papadum, biryani rice, yogurt, pomegranate.", price: 16, diet: ["V", "GF", "DFO"] },
+        { name: "Fire Cracker Lollipops", desc: "Chicken | Soy", price: 18, diet: ["GF"], star: true },
+        { name: "Charcoal Fish Pakora", desc: "Charcoal crumb, barramundi, gunpowder.", price: 18, diet: ["GF", "DFO"] },
+        { name: "Malai Chicken Tikka", desc: "Tandoori spiced roasted chicken, creamy butter, onion, mint.", price: 19, diet: ["GF", "DFO"] },
+        { name: "Goat Kabab", desc: "Spiced goat mince, flat bread, pickle, chutney.", price: 20, diet: ["GF", "DFO"] },
+        { name: "Bihari Beef Skewers", desc: "Mustard marinated flank, garlic sauce.", price: 15, diet: ["GF", "DFO"] },
+        { name: "Crispy Malabar Prawns", desc: "Kataifi, prawns, garlic, coconut, curry leaf.", price: 18, diet: ["GF", "DFO"] },
+        { name: "Bengali Calamari", desc: "Crispy calamari, pickle aioli, lemon.", price: 16, diet: ["GF", "DFO"] },
+      ],
+    },
+    {
+      label: "Large Plates",
+      items: [
+        { name: "Honey Glazed Soy Chaap", desc: "Roasted soy chaap, honey glazed Dutch carrots, smoky makhani sauce, pistachio crumble, steamed rice.", price: 32, diet: ["V", "GF", "DFO"] },
+        { name: "Malabar Seafood Pappardelle", desc: "Mixed seafood tossed in creamy coconut sauce with fresh pappardelle.", price: 34, diet: ["GF", "DFO"] },
+        { name: "Til & Curry Leaf Crusted Barramundi", desc: "Glass noodles with mushrooms and snow peas, finished with an imli jaggery chilli glaze.", price: 32, diet: ["DFO"] },
+        { name: "Kashmiri Chilli Steak", desc: "Charred steak with mild Kashmiri chilli, roasted garlic, cumin potatoes and coriander chutney.", price: 33, diet: ["GF", "DFO"] },
+        { name: "Malai Palak Chicken", desc: "Pickling spice crumbed chicken breast, spinach and cheese filling, mustard yoghurt and chilli pickle aioli.", price: 29, diet: ["GF"] },
+      ],
+    },
+    {
+      label: "Sides",
+      items: [
+        { name: "Chips", desc: "Truffle fries and parmesan cheese.", price: 11 },
+        { name: "Persian Carrots", desc: "Tahini yogurt cashew tarator.", price: 14, diet: ["GF", "V"] },
+      ],
+    },
+    {
+      label: "Desserts",
+      items: [
+        { name: "Put A Ring On It", desc: "Mungdal halwa.", price: 12 },
+        { name: "Dirty Kiss", desc: "Gajar halwa.", price: 14 },
+        { name: "Gulab Jamun Cheesecake", desc: "", price: 15 },
+      ],
+    },
   ],
-};
-
-// Weekly specials calendar.
-export const WEEKLY_SPECIALS = [
-  { day: "Wednesday", title: "Tasting Flight", detail: "Choose any 3 gins · 11+ flavours", price: 10 },
-  { day: "Thursday", title: "Ladies Special", detail: "2 cocktails & 2 small plates", price: 19.99 },
-  { day: "Friday", title: "Cozy Passport", detail: "3 cocktails or 3 house drinks · till 1am", price: 25 },
-  { day: "Saturday", title: "Tasters & Sliders", detail: "3 tasters + 2 sliders", price: 20 },
-];
-
-export const HOUSE_OFFERS = [
-  { title: "Friends Flight", detail: "Shared platter — cocktail jug, bao & skewers", price: 49 },
-  { title: "Fossey's Bottle Shop", detail: "Spend $100 & unlock any Fossey's gin or vodka", price: 40, prefix: "for" },
-];
-
-// Food menu, grouped for the tabbed layout.
-export const FOOD_MENU = {
-  plates: {
-    label: "Small Plates",
-    items: [
-      { name: "Charcoal Fish", desc: "Crispy charcoal crusted, lemon & gunpowder", price: 16, diet: ["DF", "GFO"], star: true },
-      { name: "Crispy Calamari", desc: "Golden calamari, lemon pepper & pickle aioli", price: 15, diet: ["DF", "GFO"] },
-      { name: "Garlic Chilli Prawns", desc: "Pan-fried, garlic, chilli & lemon", price: 16, diet: ["GF", "DFO"] },
-      { name: "Firecracker Chicken Lollipops", desc: "Garlic, ginger, chilli, curry leaf & pepper · 8pcs", price: 18, diet: ["GF"], star: true },
-      { name: "Jalapeño Poppers", desc: "Kataifi, jalapeño, cheese, potato, sriracha cream", price: 16, diet: ["V"] },
-      { name: "Avocado Chaat", desc: "Avocado, yoghurt, potato, tamarind", price: 16, diet: ["V", "DFO", "GFO"] },
-      { name: "Crispy Corn", desc: "Sweet corn, garlic, green chilli & spring onion", price: 16, diet: ["V", "DF", "GFO"] },
-      { name: "Crispy Mushroom Tacos", desc: "Flatbread, mushrooms, slaw, sour & chilli jam · 2pcs", price: 16, diet: ["V"] },
-    ],
-  },
-  sliders: {
-    label: "Sliders",
-    note: "Served two per order",
-    items: [
-      { name: "Potato", desc: "Potato patty, tamarind slaw, mint chutney" },
-      { name: "Cheesy Jalapeño", desc: "Cheese patty, jalapeño relish" },
-      { name: "Pork", desc: "Pulled pork, Asian slaw, jalapeño, chilli garlic aioli" },
-      { name: "Chilli Chicken", desc: "Chicken patty, chilli jam slaw, jalapeño mayo" },
-    ],
-  },
-  sides: {
-    label: "Sides",
-    items: [
-      { name: "Fries", desc: "", price: 8 },
-      { name: "Cheezy Chilli Fries", desc: "", price: 12 },
-      { name: "Flatbreads", desc: "2 flatbreads, pickle & garlic chilli aioli", price: 12 },
-    ],
-  },
-  skewers: {
-    label: "Skewers · Roast & Grilled",
-    diet: ["VO", "GFO", "DFO"],
-    price: 15,
-    served: "Served with 2 flatbreads, pickled turnip & chilli garlic aioli",
-    extra: "Extra: 1 skewer $9 · 2 flatbread $5 · pickle or dip $3",
-    items: [
-      { name: "Pineapple", desc: "Smoked paprika" },
-      { name: "Paneer", desc: "Lemon, chilli" },
-      { name: "Mushrooms", desc: "Cheese stuffed" },
-      { name: "Chicken Breast", desc: "Creamy lemon" },
-      { name: "Barramundi", desc: "Lemon butter" },
-      { name: "Prawn", desc: "Chilli garlic" },
-      { name: "Lamb", desc: "Chilli butter" },
-      { name: "Beef", desc: "Whisky infused" },
-    ],
-  },
-  kebabs: {
-    label: "Kebab Platters",
-    diet: ["VO", "GFO", "DFO"],
-    price: 15,
-    served: "Served with 2 flatbreads, pickled turnip & chilli garlic aioli",
-    extra: "2 kebab $9 · 2 flatbread $5 · pickle or dip $3",
-    items: [
-      { name: "Paneer", desc: "" },
-      { name: "Chicken", desc: "" },
-      { name: "Goat", desc: "" },
-    ],
-  },
-  bao: {
-    label: "Bao Buns",
-    diet: ["VO", "DFO"],
-    price: 15,
-    note: "2 pcs · choose your filling",
-    fillings: ["Pork Belly", "Paneer", "Chicken", "Prawns"],
-    flavours: ["Hot & Sour", "Garlic Chilli", "Asian Slaw"],
-  },
-  dumplings: {
-    label: "Dumplings",
-    diet: ["VO", "DFO"],
-    price: 12,
-    note: "5 pcs · steamed or fried",
-    fillings: ["Veg", "Paneer", "Chicken", "Prawns"],
-    sauces: [
-      { name: "Ginger & Coriander (Soup)", price: 4, star: true },
-      { name: "Tomato Sesame", price: 4 },
-      { name: "Hot Chilli", price: 4 },
-      { name: "Hot & Sour", price: 4 },
-    ],
-  },
 };
 
 // ─── FOSSEY'S DISTILLERY, THE CELLAR (retail / ship nationally) ──
