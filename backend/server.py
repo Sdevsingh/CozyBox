@@ -291,7 +291,9 @@ async def create_booking(body: BookingIn):
 
 # Authoritative retail prices (cents), keyed by id and lowercased name. Orders
 # are ALWAYS re-priced from this — a tampered client price can never be charged.
-_PRICE_BY_ID = {i["id"]: i["price"] for i in C.CATALOG if i.get("price")}
+# RETAIL_PRICES (the full spirit catalog) is authoritative; fall back to any
+# other priced content items by name for safety.
+_PRICE_BY_ID = {**{i["id"]: i["price"] for i in C.CATALOG if i.get("price")}, **C.RETAIL_PRICES}
 _PRICE_BY_NAME = {i["name"].strip().lower(): i["price"] for i in C.CATALOG if i.get("price")}
 
 

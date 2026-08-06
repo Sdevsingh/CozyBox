@@ -42,7 +42,10 @@ CATALOG = [
     {"id": "GIN_ORIGINAL", "name": "Original Gin", "description": "Botanical-forward London dry, crafted with precision. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/real_still.jpg"},
     {"id": "GIN_SHIRAZ", "name": "Shiraz Gin", "description": "Barossa shiraz steeped over the original botanicals. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/shop_bottles.jpg"},
     {"id": "GIN_NAVAL", "name": "Naval Strength Gin", "description": "Bold, high-proof and intensely aromatic. 57% ABV · 700ml.", "price": 9500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/real_still.jpg"},
-    {"id": "GIN_CHILLI", "name": "Chilli Gin", "description": "Botanical gin with a slow build of warming chilli. 40% ABV · 500ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/shop_bottles.jpg"},
+    {"id": "GIN_CHILLI", "name": "Chilli Gin", "description": "Botanical gin with a slow build of warming chilli. 40% ABV · 500ml.", "price": 7500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/fosseys_chilli_gin.jpg"},
+    {"id": "GIN_DESERT_LIME", "name": "Desert Lime Gin", "description": "Native desert lime, zesty and unmistakably Australian. 40% ABV · 700ml.", "price": 8500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/desert-lime-gin-min.png"},
+    {"id": "GIN_KAFFIR_LEAF", "name": "Kaffir Leaf Gin", "description": "Fragrant kaffir lime leaf gin. 40% ABV · 500ml.", "price": 7500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/shop_bottles.jpg"},
+    {"id": "GIN_XMAS_PUD", "name": "Christmas Pudding Gin", "description": "Seasonal gin with Christmas pudding spice. 40% ABV · 500ml.", "price": 7500, "category": "retail", "section": "Gin", "dietary": [], "image": "/img/shop_bottles.jpg"},
     {"id": "VODKA_BLOOD_ORANGE", "name": "Blood Orange Vodka", "description": "Bright, citrus-forward vodka infused with blood orange. 40% ABV · 700ml.", "price": 6000, "category": "retail", "section": "Vodka", "dietary": [], "image": "/img/real_cocktail.jpg"},
     {"id": "WHISKY_SINGLE_MALT", "name": "Single Malt Whisky", "description": "Rich, balanced single malt with depth and character. 44% ABV · 500ml.", "price": 16000, "category": "retail", "section": "Whisky", "dietary": [], "image": "/img/real_still.jpg"},
     {"id": "WHISKY_PEATED", "name": "Peated Single Malt", "description": "Smoky, single-barrel peated malt. 44% ABV · 500ml.", "price": 16500, "category": "retail", "section": "Whisky", "dietary": [], "image": "/img/real_still.jpg"},
@@ -52,6 +55,23 @@ CATALOG = [
     {"id": "IND_KALA_KHATTA", "name": "Kala Khatta Gin Liquor", "description": "Indian Series — tangy, dark jamun kala khatta. 36.5% ABV · 700ml.", "price": 9700, "category": "retail", "section": "Indian Series", "dietary": [], "image": "/img/real_cocktail.jpg"},
     {"id": "IND_ROYAL_ATTAR", "name": "Royal Attar Vodka", "description": "Indian Series — rose & saffron royal attar. 35.4% ABV · 700ml.", "price": 9700, "category": "retail", "section": "Indian Series", "dietary": [], "image": "/img/real_still.jpg"},
 ]
+
+# ── Authoritative retail prices (AUD cents) by product id ──
+# The single source the /api/orders endpoint trusts when re-pricing a cart, so a
+# tampered client price can never be charged. MUST stay in sync with the
+# frontend SPIRITS catalog (src/data/index.js).
+RETAIL_PRICES = {
+    "GIN_ORIGINAL": 5999, "GIN_DESERT_LIME": 7500, "GIN_NAVAL": 9500, "GIN_SHIRAZ": 7500,
+    "GIN_KAFFIR_LEAF": 7500, "GIN_TODDY": 7500, "GIN_XMAS_PUD": 7500, "GIN_CHILLI": 7500,
+    "GIN_GRAPEFRUIT": 7500,
+    "VODKA_DOUBLE": 5999, "VODKA_D_DOUBLE": 5999, "VODKA_BLOOD_ORANGE": 7500,
+    "WHISKY_SINGLE_MALT": 16000, "WHISKY_PEATED": 16500, "WHISKY_BUTTERSCOTCH": 7500,
+    "WHISKY_MONSOON_DROP": 7500, "WHISKY_MALWA_MALT": 8999,
+    "RUM_HONEY": 8500, "RUM_REDGUM": 8500, "LIQ_COFFEE": 7500,
+    "IND_JAMUN": 7500, "IND_MANGO": 7500, "IND_LAHORI_JEERA": 7500, "IND_BOTANICA": 7500,
+    "IND_ROSE_LYCHEE": 7500, "IND_SAFFRON": 7500, "IND_PAAN": 7500, "IND_POPCORN": 7500,
+    "IND_BLACK": 7500,
+}
 
 EVENTS = [
     {"id": "EVT_LADIES_NIGHT", "title": "Ladies Night", "tagline": "Cocktails, beats & glamour", "date": "2026-07-23", "startTime": "19:00", "category": "Signature", "description": "Our signature Ladies Night returns — 2-for-1 signature cocktails before 9pm, a live DJ, and a sparkling welcome on arrival. Gather your crew for a night of glamour at the Cozy Box bar.", "priceFrom": 0, "image": "/img/ladies_night.jpg", "bookable": True},
