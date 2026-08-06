@@ -366,13 +366,15 @@ async def create_order(body: OrderIn):
 
 # Opening hours by weekday (Mon=0 … Sun=6): (open_hour, last_seating_hour)
 # None = closed. Mirrors LOCATION hours: Wed–Sun, closed Mon/Tue.
+# Mock-only fallback (Square is authoritative when Appointments is live).
+# Wed/Thu run a split lunch+dinner service; approximated here as one span.
 _HOURS = {
     0: None,          # Mon closed
     1: None,          # Tue closed
-    2: (16.5, 21.5),  # Wed 4:30pm–10pm (last seating 9:30pm)
-    3: (16.5, 23.5),  # Thu 4:30pm–1am (last seating 11:30pm)
-    4: (11, 23.5),    # Fri 11am–1am
-    5: (11, 23.5),    # Sat 11am–1am
+    2: (11, 21.5),    # Wed 11am–3pm & 4:30pm–10pm
+    3: (11, 21.5),    # Thu 11am–3pm & 4:30pm–10pm
+    4: (11, 24.5),    # Fri 11am–1am
+    5: (11, 24.5),    # Sat 11am–1am
     6: (11, 21.5),    # Sun 11am–10pm
 }
 

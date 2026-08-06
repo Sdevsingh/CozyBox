@@ -110,7 +110,7 @@ export default function Footer() {
             <ul>
               {HOURS.map((h) => {
                 const isToday = h.dow === todayDow;
-                const closed = h.open == null;
+                const closed = !h.ranges || h.ranges.length === 0;
                 return (
                   <li key={h.day}
                     className={`flex items-center justify-between gap-3 px-3 py-2 rounded-md transition-colors ${isToday ? "bg-amber/10" : ""}`}

@@ -15,13 +15,13 @@ export const LOCATION = {
   hours: [
     { day: "Monday", time: "Closed" },
     { day: "Tuesday", time: "Closed" },
-    { day: "Wednesday", time: "4:30pm – 10pm" },
-    { day: "Thursday", time: "4:30pm – 1am" },
+    { day: "Wednesday", time: "11am – 3pm · 4:30pm – 10pm" },
+    { day: "Thursday", time: "11am – 3pm · 4:30pm – 10pm" },
     { day: "Friday", time: "11am – 1am" },
     { day: "Saturday", time: "11am – 1am" },
     { day: "Sunday", time: "11am – 10pm" },
   ],
-  hoursOneLiner: "Wed 4:30pm–10pm · Thu 4:30pm–1am · Fri & Sat 11am–1am · Sun 11am–10pm · Mon & Tue closed",
+  hoursOneLiner: "Wed & Thu 11am–3pm & 4:30pm–10pm · Fri & Sat 11am–1am · Sun 11am–10pm · Mon & Tue closed",
   aboutBlurb:
     "Cozy Box celebrates the rich diversity of Indian cuisine through a contemporary, tapas style experience. Crafted for sharing and discovery, each small plate reimagines familiar flavours — where every dish tells a story and every bite sparks conversation.",
   enquiryEmail: "events@cozybox.au",
@@ -30,14 +30,16 @@ export const LOCATION = {
 // ─── OPENING HOURS (structured + live "open now") ─────────
 //  24-hour decimals; close > 24 means the venue trades past midnight.
 //  `dow` is JS getDay() (0 = Sunday … 6 = Saturday).
+// Each day holds one or more trading `ranges` of [open, close] in decimal hours
+// (a close > 24 means it trades past midnight). Wed/Thu run a split lunch+dinner.
 export const HOURS = [
-  { day: "Monday", dow: 1, open: null, close: null },
-  { day: "Tuesday", dow: 2, open: null, close: null },
-  { day: "Wednesday", dow: 3, open: 16.5, close: 22 },   // 4:30pm – 10pm
-  { day: "Thursday", dow: 4, open: 16.5, close: 25 },    // 4:30pm – 1am
-  { day: "Friday", dow: 5, open: 11, close: 25 },        // 11am – 1am
-  { day: "Saturday", dow: 6, open: 11, close: 25 },      // 11am – 1am
-  { day: "Sunday", dow: 0, open: 11, close: 22 },        // 11am – 10pm
+  { day: "Monday", dow: 1, ranges: [] },
+  { day: "Tuesday", dow: 2, ranges: [] },
+  { day: "Wednesday", dow: 3, ranges: [[11, 15], [16.5, 22]] },  // 11–3 & 4:30–10
+  { day: "Thursday", dow: 4, ranges: [[11, 15], [16.5, 22]] },   // 11–3 & 4:30–10
+  { day: "Friday", dow: 5, ranges: [[11, 25]] },                 // 11am – 1am
+  { day: "Saturday", dow: 6, ranges: [[11, 25]] },               // 11am – 1am
+  { day: "Sunday", dow: 0, ranges: [[11, 22]] },                 // 11am – 10pm
 ];
 
 const fmtHour = (h) => {
@@ -47,7 +49,10 @@ const fmtHour = (h) => {
   const h12 = hh % 12 === 0 ? 12 : hh % 12;
   return m === 0 ? `${h12}${ap}` : `${h12}:${String(m).padStart(2, "0")}${ap}`;
 };
-export const hourLabel = (e) => (e.open == null ? "Closed" : `${fmtHour(e.open)} – ${fmtHour(e.close)}`);
+export const hourLabel = (e) =>
+  e.ranges && e.ranges.length
+    ? e.ranges.map(([o, c]) => `${fmtHour(o)} – ${fmtHour(c)}`).join(" · ")
+    : "Closed";
 
 // Current time at the venue (Australia/Melbourne), as a JS weekday + decimal hour.
 export function melbourneNow() {
@@ -66,15 +71,15 @@ export function melbourneNow() {
   }
 }
 
-// Is the venue open right now? (handles trading past midnight).
+// Is the venue open right now? (handles split shifts + trading past midnight).
 export function openStatus() {
   const { dow, time } = melbourneNow();
   const byDow = (d) => HOURS.find((h) => h.dow === d);
   const today = byDow(dow);
-  let openNow = !!(today && today.open != null && time >= today.open && time < today.close);
+  let openNow = !!(today && today.ranges.some(([o, c]) => time >= o && time < c));
   if (!openNow) {
     const y = byDow((dow + 6) % 7); // yesterday, in case it closed after midnight
-    if (y && y.close > 24 && time < y.close - 24) openNow = true;
+    if (y) openNow = y.ranges.some(([, c]) => c > 24 && time < c - 24);
   }
   return { openNow, todayDow: dow };
 }
