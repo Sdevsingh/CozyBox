@@ -54,15 +54,16 @@ export default function HorizontalScroll({ children, className = "", title }) {
           <p className="eyebrow">{title}</p>
         </div>
       )}
-      {/* mobile: normal horizontal snap scroll */}
-      <div
-        ref={trackRef}
-        className="hs-track flex gap-5 sm:gap-8 px-8 sm:px-14 py-24 sm:py-32 will-change-transform
-          overflow-x-auto sm:overflow-x-visible snap-x snap-mandatory sm:snap-none
-          scrollbar-none"
-        style={{ width: "max-content" }}
-      >
-        {children}
+      {/* Scroll viewport: on mobile this is the swipeable container (bounded to
+          the screen). On desktop it's visible and GSAP pans the inner track. */}
+      <div className="overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none scrollbar-none">
+        <div
+          ref={trackRef}
+          className="hs-track flex gap-5 sm:gap-8 px-8 sm:px-14 py-24 sm:py-32 will-change-transform"
+          style={{ width: "max-content" }}
+        >
+          {children}
+        </div>
       </div>
     </section>
   );
