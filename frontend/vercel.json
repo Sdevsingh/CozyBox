@@ -2,7 +2,10 @@
   "headers": [
     {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
-      "headers": [{ "key": "Content-Type", "value": "application/octet-stream" }]
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "no-transform, public, max-age=0" }
+      ]
     },
     {
       "source": "/(.*)",
