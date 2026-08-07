@@ -88,17 +88,17 @@ export default function Booking() {
 
   return (
     <div data-testid="booking-page" className="relative min-h-screen grid lg:grid-cols-2 overflow-x-hidden">
-      <div className="relative hidden lg:block">
-        <img src="/img/hero_club.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/40 to-ink" />
-        <div className="absolute bottom-12 left-12 right-12">
+      <div className="relative h-56 lg:h-auto">
+        <img src="/img/hero_club.jpg" alt="A table set for the evening at the Cozy Box" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-ink/40 to-ink lg:bg-gradient-to-r lg:from-ink/40 lg:via-transparent lg:to-ink" />
+        <div className="hidden lg:block absolute bottom-12 left-12 right-12">
           <p className="eyebrow mb-4">Reservations</p>
           <h2 className="font-display text-5xl leading-tight">Pull up a seat at the Cozy Box.</h2>
           <p className="text-smoke mt-4 max-w-md">209 Lygon St, Carlton · Wed to Sun. For parties over 12, use Private & Events.</p>
         </div>
       </div>
 
-      <div className="flex items-start lg:items-center justify-center px-6 pt-28 pb-20 lg:py-24 min-w-0">
+      <div className="flex items-start lg:items-center justify-center px-6 pt-10 pb-20 lg:py-24 min-w-0">
         <div className="w-full max-w-md min-w-0">
           {status === "done" ? (
             <motion.div initial="hidden" animate="show" variants={blurReveal} className="text-center rounded-2xl border border-amber/40 bg-ink-surface p-10" data-testid="booking-success">
