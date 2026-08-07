@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ShieldCheck, CreditCard, ExternalLink, Loader2, Truck } from "lucide-react";
 import { api, formatPrice } from "../lib/api";
 import { getConfig, loadSquareSdk } from "../lib/square";
-import { isValidEmail, isValidAuPhone, isValidAuPostcode } from "../lib/validate";
+import { isValidEmail, isValidAuPhone, isValidAuPostcode, isValidName } from "../lib/validate";
 import GlowButton from "./GlowButton";
 
 /**
@@ -34,7 +34,11 @@ export default function SquareCheckout({ lines, total, onDone }) {
   // call the latest version (avoids stale closures).
   const finishOrder = async (sourceId, { requireEmail = true } = {}) => {
     setError("");
-    if (cfg?.enabled && requireEmail && !isValidEmail(buyer.email)) {
+    if (!isValidName(buyer.name)) {
+      setError("Please enter a valid name (letters only).");
+      return;
+    }
+    if (requireEmail && !isValidEmail(buyer.email)) {
       setError("Please add a valid email for your receipt.");
       return;
     }
@@ -206,9 +210,9 @@ export default function SquareCheckout({ lines, total, onDone }) {
   return (
     <div className="space-y-3" data-testid="square-checkout">
       <div className="grid grid-cols-2 gap-2">
-        <input placeholder="Name" className={field} value={buyer.name}
-          onChange={(e) => setBuyer({ ...buyer, name: e.target.value })} data-testid="checkout-name" />
-        <input type="email" placeholder="Email" className={field} value={buyer.email}
+        <input placeholder="Name" className={field} value={buyer.name} autoComplete="name"
+          onChange={(e) => setBuyer({ ...buyer, name: e.target.value.replace(/[0-9]/g, "") })} data-testid="checkout-name" />
+        <input type="email" inputMode="email" placeholder="Email" className={field} value={buyer.email} autoComplete="email"
           onChange={(e) => setBuyer({ ...buyer, email: e.target.value })} data-testid="checkout-email" />
       </div>
 

@@ -3,6 +3,11 @@
 export const isValidEmail = (e) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((e || "").trim());
 
+// A real name: letters (any language), spaces, hyphens, apostrophes, dots.
+// No digits or gibberish symbols; at least 2 characters.
+export const isValidName = (n) =>
+  /^[\p{L}][\p{L} .'’-]{1,}$/u.test((n || "").trim());
+
 // Accepts AU mobiles (04xx xxx xxx) and landlines (02/03/07/08 + 8 digits),
 // with or without a +61 country code, and tolerates spaces/dashes/brackets.
 export const isValidAuPhone = (raw) => {

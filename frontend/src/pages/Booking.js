@@ -79,7 +79,7 @@ export default function Booking() {
   const field = "w-full bg-ink-surface/60 border hairline rounded-xl px-4 py-3 text-white placeholder:text-smoke-dim focus:border-amber/60 focus:outline-none transition-colors";
 
   return (
-    <div data-testid="booking-page" className="relative min-h-screen grid lg:grid-cols-2">
+    <div data-testid="booking-page" className="relative min-h-screen grid lg:grid-cols-2 overflow-x-hidden">
       <div className="relative hidden lg:block">
         <img src="/img/hero_club.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink/40 to-ink" />
@@ -90,8 +90,8 @@ export default function Booking() {
         </div>
       </div>
 
-      <div className="flex items-start lg:items-center justify-center px-6 pt-28 pb-20 lg:py-24">
-        <div className="w-full max-w-md">
+      <div className="flex items-start lg:items-center justify-center px-6 pt-28 pb-20 lg:py-24 min-w-0">
+        <div className="w-full max-w-md min-w-0">
           {status === "done" ? (
             <motion.div initial="hidden" animate="show" variants={blurReveal} className="text-center rounded-2xl border border-amber/40 bg-ink-surface p-10" data-testid="booking-success">
               <Check className="mx-auto text-amber mb-4" size={36} />
