@@ -107,7 +107,7 @@ export default function Booking() {
               </div>
               <div>
                 <input required placeholder="Full name" className={field} value={form.name}
-                  onChange={(e) => { setForm({ ...form, name: e.target.value }); if (errors.name) setErrors({ ...errors, name: null }); }}
+                  onChange={(e) => { setForm({ ...form, name: e.target.value.replace(/[^\p{L} .'-]/gu, "") }); if (errors.name) setErrors({ ...errors, name: null }); }}
                   onBlur={(e) => blurCheck("name", e.target.value)}
                   aria-invalid={!!errors.name} data-testid="booking-name" />
                 {errors.name && <p className="text-red-400 text-xs mt-1.5" data-testid="err-name">{errors.name}</p>}

@@ -211,7 +211,7 @@ export default function SquareCheckout({ lines, total, onDone }) {
     <div className="space-y-3" data-testid="square-checkout">
       <div className="grid grid-cols-2 gap-2">
         <input placeholder="Name" className={field} value={buyer.name} autoComplete="name"
-          onChange={(e) => setBuyer({ ...buyer, name: e.target.value.replace(/[0-9]/g, "") })} data-testid="checkout-name" />
+          onChange={(e) => setBuyer({ ...buyer, name: e.target.value.replace(/[^\p{L} .'-]/gu, "") })} data-testid="checkout-name" />
         <input type="email" inputMode="email" placeholder="Email" className={field} value={buyer.email} autoComplete="email"
           onChange={(e) => setBuyer({ ...buyer, email: e.target.value })} data-testid="checkout-email" />
       </div>
@@ -229,14 +229,14 @@ export default function SquareCheckout({ lines, total, onDone }) {
           <input placeholder="Phone (for delivery)" inputMode="tel" className={field} value={ship.phone}
             onChange={(e) => setShip({ ...ship, phone: e.target.value.replace(/[^\d+\s()-]/g, "") })} autoComplete="tel" />
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] gap-2">
-          <input placeholder="Suburb" className={field} value={ship.suburb}
-            onChange={(e) => setShip({ ...ship, suburb: e.target.value })} data-testid="checkout-suburb" autoComplete="address-level2" />
+        <input placeholder="Suburb" className={field} value={ship.suburb}
+          onChange={(e) => setShip({ ...ship, suburb: e.target.value.replace(/[^\p{L} .'-]/gu, "") })} data-testid="checkout-suburb" autoComplete="address-level2" />
+        <div className="grid grid-cols-2 gap-2">
           <select className={`${field} pr-8`} value={ship.state}
             onChange={(e) => setShip({ ...ship, state: e.target.value })} data-testid="checkout-state" aria-label="State">
             {["VIC", "NSW", "QLD", "SA", "WA", "TAS", "NT", "ACT"].map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-          <input placeholder="Postcode" inputMode="numeric" maxLength={4} className={`${field} w-24`} value={ship.postcode}
+          <input placeholder="Postcode" inputMode="numeric" maxLength={4} className={field} value={ship.postcode}
             onChange={(e) => setShip({ ...ship, postcode: e.target.value.replace(/\D/g, "").slice(0, 4) })} data-testid="checkout-postcode" autoComplete="postal-code" />
         </div>
       </div>
@@ -250,10 +250,10 @@ export default function SquareCheckout({ lines, total, onDone }) {
           <div id="apple-pay-button" className={`apple-pay-button ${wallets.apple ? "" : "hidden"}`} aria-label="Pay with Apple Pay" />
           <div id="google-pay-button" className={`min-h-[44px] ${wallets.google ? "" : "hidden"}`} />
           <div id="afterpay-button" className={`min-h-[44px] ${wallets.afterpay ? "" : "hidden"}`} aria-label="Pay with Afterpay" />
-          {/* Apple Pay only renders in Safari on a verified HTTPS domain — hint elsewhere */}
+          {/* Apple Pay only renders in Safari on Apple devices */}
           {!wallets.apple && (
             <p className="text-smoke-dim text-[0.62rem] leading-relaxed">
-               Apple Pay appears in Safari once we're live on cozybox.au (it can't show on localhost or in Chrome).
+              Apple Pay is available in Safari on iPhone, iPad and Mac.
             </p>
           )}
           {anyWallet && (

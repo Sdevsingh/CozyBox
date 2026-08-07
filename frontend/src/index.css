@@ -32,6 +32,18 @@ h1, h2, h3, h4 { font-family: "Cormorant Garamond", serif; font-weight: 300; }
 
 ::selection { background: rgba(255, 159, 28, 0.3); color: #fff; }
 
+/* Keep browser-autofilled inputs on-brand (dark) instead of the default yellow */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0 1000px #141210 inset;
+  caret-color: #fff;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
 /* Lenis */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
