@@ -9,19 +9,27 @@ import GlowButton from "../components/GlowButton";
 const empty = { name: "", email: "", phone: "", date: "", time: "", startAt: "", guests: 2, notes: "" };
 
 // Open dates for the next ~8 weeks (Wed to Sun; closed Mon/Tue) as a date strip.
+// Anchored to MELBOURNE's calendar date so the venue's days line up with Square
+// availability no matter what timezone the visitor's device is in.
 const OPEN_DATES = (() => {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Australia/Melbourne", year: "numeric", month: "2-digit", day: "2-digit",
+    }).formatToParts(new Date()).map((x) => [x.type, x.value])
+  );
+  const base = new Date(Date.UTC(+p.year, +p.month - 1, +p.day));
   const out = [];
-  const t = new Date();
   for (let i = 0; i < 56 && out.length < 24; i++) {
-    const d = new Date(t.getFullYear(), t.getMonth(), t.getDate() + i);
-    const wd = d.getDay();
+    const d = new Date(base);
+    d.setUTCDate(base.getUTCDate() + i);
+    const wd = d.getUTCDay();
     if (wd === 1 || wd === 2) continue; // Mon + Tue closed
-    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const value = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
     out.push({
       value,
-      wd: i === 0 ? "Today" : d.toLocaleDateString("en-AU", { weekday: "short" }),
-      day: d.getDate(),
-      mon: d.toLocaleDateString("en-AU", { month: "short" }),
+      wd: i === 0 ? "Today" : d.toLocaleDateString("en-AU", { weekday: "short", timeZone: "UTC" }),
+      day: d.getUTCDate(),
+      mon: d.toLocaleDateString("en-AU", { month: "short", timeZone: "UTC" }),
     });
   }
   return out;
