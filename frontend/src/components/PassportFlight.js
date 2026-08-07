@@ -170,6 +170,16 @@ export default function PassportFlight() {
   const [planeImg, setPlaneImg] = useState(null);
   const [points, setPoints] = useState([]); // checkpoint coords, resolved from the path
   const [landed, setLanded] = useState(false);
+  // On phones the flight graphic (landscape) must FIT (meet) so the route/stamps
+  // aren't cropped off the sides; on desktop it fills (slice).
+  const [par, setPar] = useState("xMidYMid slice");
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const apply = () => setPar(mq.matches ? "xMidYMid meet" : "xMidYMid slice");
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   const px = useMotionValue(110);
   const py = useMotionValue(90);
@@ -219,7 +229,7 @@ export default function PassportFlight() {
 
   return (
     <section ref={ref} className="relative bg-ink" style={{ height: reduce ? "auto" : "360vh" }} data-testid="passport-flight">
-      <div className={`${reduce ? "" : "sticky top-0"} h-screen overflow-hidden`}>
+      <div className={`${reduce ? "" : "sticky top-0"} h-[100svh] overflow-hidden`}>
         <motion.div style={reduce ? undefined : { y: textY }} className="absolute z-10 top-[13%] left-0 right-0 px-6 sm:px-10">
           <div className="mx-auto max-w-[1200px] text-center">
             <Reveal><p className="eyebrow mb-3">Your passport journey</p></Reveal>
@@ -228,7 +238,7 @@ export default function PassportFlight() {
           </div>
         </motion.div>
 
-        <svg viewBox="0 0 1000 620" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <svg viewBox="0 0 1000 620" className="w-full h-full" preserveAspectRatio={par} aria-hidden="true">
           <defs>
             <radialGradient id="pf-glow" cx="0.72" cy="0.78" r="0.6">
               <stop offset="0" stopColor="rgba(255,170,45,0.5)" />
