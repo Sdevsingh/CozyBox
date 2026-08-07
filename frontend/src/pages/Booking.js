@@ -90,7 +90,7 @@ export default function Booking() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center px-6 py-32 sm:py-36">
+      <div className="flex items-start lg:items-center justify-center px-6 pt-28 pb-20 lg:py-24">
         <div className="w-full max-w-md">
           {status === "done" ? (
             <motion.div initial="hidden" animate="show" variants={blurReveal} className="text-center rounded-2xl border border-amber/40 bg-ink-surface p-10" data-testid="booking-success">
@@ -112,7 +112,7 @@ export default function Booking() {
                   aria-invalid={!!errors.name} data-testid="booking-name" />
                 {errors.name && <p className="text-red-400 text-xs mt-1.5" data-testid="err-name">{errors.name}</p>}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <input required type="email" inputMode="email" placeholder="Email" className={field} value={form.email}
                     onChange={(e) => { setForm({ ...form, email: e.target.value }); if (errors.email) setErrors({ ...errors, email: null }); }}
@@ -171,10 +171,10 @@ export default function Booking() {
                       We're closed that day. We are open Wed to Sun. Pick another date.
                     </p>
                   ) : (
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {slots.map((s) => (
                         <button type="button" key={s.startAt} onClick={() => setForm({ ...form, time: s.time, startAt: s.startAt })}
-                          className={`py-2 rounded-lg text-sm border transition-colors ${form.time === s.time ? "bg-amber text-ink border-amber" : "hairline text-white/80 hover:border-amber/50"}`}
+                          className={`py-2.5 rounded-lg text-sm border transition-colors ${form.time === s.time ? "bg-amber text-ink border-amber" : "hairline text-white/80 hover:border-amber/50"}`}
                           data-testid={`slot-${s.time}`}>{s.time}</button>
                       ))}
                     </div>
