@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Plus, Minus, ShoppingBag } from "lucide-react";
@@ -13,6 +14,16 @@ import SquareCheckout from "./SquareCheckout";
 export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, dec, onDone }) {
   const count = lines.reduce((s, l) => s + l.qty, 0);
   const FREE_SHIP = 15000;
+
+  // Pause Lenis smooth-scroll while the dialog is open — otherwise Lenis keeps
+  // driving the page behind the modal (Radix's overflow lock can't stop it),
+  // so wheel/touch scroll leaks to the Cellar page instead of the checkout.
+  useEffect(() => {
+    const lenis = window.__lenis;
+    if (open) lenis?.stop();
+    else lenis?.start();
+    return () => window.__lenis?.start();
+  }, [open]);
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
