@@ -3,7 +3,8 @@
     {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
       "headers": [
-        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Content-Type", "value": "application/octet-stream" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"apple-developer-merchantid-domain-association\"" },
         { "key": "Cache-Control", "value": "no-transform, public, max-age=0" }
       ]
     },
