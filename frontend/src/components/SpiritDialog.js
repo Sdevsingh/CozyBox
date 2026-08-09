@@ -61,6 +61,14 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
     return () => { document.title = prev; };
   }, [spirit]);
 
+  // Freeze Lenis smooth-scroll while the product view is open so the Cellar
+  // page behind it doesn't scroll (paired with data-lenis-prevent below).
+  useEffect(() => {
+    if (spirit) window.__lenis?.stop();
+    else window.__lenis?.start();
+    return () => window.__lenis?.start();
+  }, [spirit]);
+
   return (
     <Dialog.Root open={!!spirit} onOpenChange={(o) => !o && onClose()}>
       <AnimatePresence>
@@ -84,6 +92,7 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
             >
               <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-6 pointer-events-none">
                 <motion.div
+                  data-lenis-prevent
                   className="pointer-events-auto relative w-full max-w-4xl max-h-[90vh] overflow-y-auto overscroll-contain
                     rounded-3xl border border-amber/25 bg-ink-surface
                     shadow-[0_30px_120px_-20px_rgba(0,0,0,0.9)]"
