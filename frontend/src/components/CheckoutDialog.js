@@ -45,6 +45,7 @@ export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, 
             >
               <div className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-6 pointer-events-none">
                 <motion.div
+                  data-lenis-prevent
                   className="pointer-events-auto relative w-full max-w-4xl max-h-[92vh] overflow-y-auto overscroll-contain
                     rounded-3xl border border-amber/25 bg-ink-surface
                     shadow-[0_30px_120px_-20px_rgba(0,0,0,0.9)]"
@@ -66,7 +67,7 @@ export default function CheckoutDialog({ open, onOpenChange, lines, total, inc, 
                         <h2 className="text-2xl">The Cellar</h2>
                         <p className="text-smoke-dim text-xs mt-1">{count} {count === 1 ? "bottle" : "bottles"} · ships Australia-wide</p>
                       </div>
-                      <div className="flex-1 min-h-0 overflow-y-auto p-7 space-y-5">
+                      <div data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto p-7 space-y-5">
                         {lines.map((l) => (
                           <div key={l.id} className="flex gap-4" data-testid={`summary-line-${l.id}`}>
                             <img src={l.image || "/img/shop_bottles.jpg"} alt={l.name}
