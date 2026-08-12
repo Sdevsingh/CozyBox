@@ -41,7 +41,15 @@ if MONGO_URL:
 # In-memory fallback collections (used only when db is None)
 _mem = {}
 
-app = FastAPI(title="Cozy Box API")
+# Interactive API docs (/docs, /redoc, /openapi.json) expose the full schema and
+# internal routes — keep them off in production. Set EXPOSE_DOCS=1 to re-enable.
+_EXPOSE_DOCS = os.environ.get("EXPOSE_DOCS", "").lower() in ("1", "true", "yes")
+app = FastAPI(
+    title="Cozy Box API",
+    docs_url="/docs" if _EXPOSE_DOCS else None,
+    redoc_url="/redoc" if _EXPOSE_DOCS else None,
+    openapi_url="/openapi.json" if _EXPOSE_DOCS else None,
+)
 api = APIRouter(prefix="/api")
 
 
