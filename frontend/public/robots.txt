@@ -1,0 +1,5 @@
+# Cozy Box by Fossey's Distillery
+User-agent: *
+Allow: /
+
+Sitemap: https://cozybox.au/sitemap.xml

@@ -6,12 +6,14 @@ import SmoothScroll from "./SmoothScroll";
 import SpotlightCursor from "./SpotlightCursor";
 import AgeGate from "./AgeGate";
 import Preloader from "./Preloader";
+import { applyRouteSeo } from "../lib/seo";
 
 export default function Layout() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
+    applyRouteSeo(pathname);
   }, [pathname]);
 
   return (
