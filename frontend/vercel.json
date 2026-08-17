@@ -1,4 +1,10 @@
 {
+  "redirects": [
+    { "source": "/our-menu", "destination": "/menu", "permanent": true },
+    { "source": "/our-menu/:path*", "destination": "/menu", "permanent": true },
+    { "source": "/product-category/:path*", "destination": "/shop", "permanent": true },
+    { "source": "/product/:path*", "destination": "/shop", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
