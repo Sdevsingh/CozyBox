@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { ArrowUpRight, ArrowRight, CalendarDays, Sparkles } from "lucide-react";
@@ -236,15 +236,65 @@ const PANELS = [
   { to: "/private", n: "04", label: "Private & Events", img: "/img/private_events.jpg", copy: "Booths, functions, corporate nights & exclusive venue hire." },
 ];
 
+function PanelCard({ p, active = false, className = "" }) {
+  return (
+    <Link
+      to={p.to}
+      data-testid={`panel-${p.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
+      className={`group relative rounded-[1.75rem] overflow-hidden border shrink-0 transition-all duration-500 ${active ? "border-amber/40 shadow-[0_20px_80px_-30px_rgba(255,159,28,0.5)]" : "hairline"} ${className}`}
+    >
+      <img src={p.img} alt={p.label} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
+      <span className="absolute top-7 left-7 font-display text-2xl text-amber/80">{p.n}</span>
+      <div className="absolute inset-0 p-8 sm:p-10 flex flex-col justify-end">
+        <h3 className="text-3xl sm:text-4xl mb-3 group-hover:text-amber transition-colors">{p.label}</h3>
+        <p className="text-smoke max-w-md mb-5">{p.copy}</p>
+        <span className="inline-flex items-center gap-2 text-amber text-xs uppercase tracking-[0.2em]">
+          Discover <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
 function Showcase() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], ["2%", "-74%"]);
   const [active, setActive] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     setActive(Math.max(0, Math.min(PANELS.length - 1, Math.floor(v * PANELS.length + 0.15))));
   });
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
+  // Mobile: a clean native horizontal swipe carousel (no scroll-jacking).
+  if (isMobile) {
+    return (
+      <section className="relative bg-ink py-16 overflow-hidden" data-testid="showcase">
+        <Particles density={0.4} className="opacity-30" />
+        <div className="relative px-6 mb-8 flex items-end justify-between">
+          <h2 className="text-3xl leading-none">A night,<br />your way.</h2>
+          <span className="text-smoke-dim text-xs uppercase tracking-[0.3em] pulse-idle self-end">Swipe →</span>
+        </div>
+        <div className="relative overflow-x-auto snap-x snap-mandatory scrollbar-none">
+          <div className="flex gap-5 px-6 pb-2 w-max">
+            {PANELS.map((p) => (
+              <PanelCard key={p.to} p={p} className="snap-start w-[82vw] h-[64vh]" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop: cards pan horizontally as you scroll the tall pinned section.
   return (
     <section ref={ref} className="relative h-[360vh] bg-ink" data-testid="showcase">
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
@@ -259,23 +309,7 @@ function Showcase() {
 
         <motion.div style={{ x }} className="relative flex gap-6 sm:gap-8 pl-6 sm:pl-10 w-max">
           {PANELS.map((p, i) => (
-            <Link
-              key={p.to}
-              to={p.to}
-              data-testid={`panel-${p.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
-              className={`group relative w-[78vw] sm:w-[60vw] lg:w-[42vw] h-[60vh] rounded-[1.75rem] overflow-hidden border shrink-0 transition-all duration-500 ${i === active ? "border-amber/40 shadow-[0_20px_80px_-30px_rgba(255,159,28,0.5)]" : "hairline"}`}
-            >
-              <img src={p.img} alt={p.label} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
-              <span className="absolute top-7 left-7 font-display text-2xl text-amber/80">{p.n}</span>
-              <div className="absolute inset-0 p-8 sm:p-10 flex flex-col justify-end">
-                <h3 className="text-3xl sm:text-4xl mb-3 group-hover:text-amber transition-colors">{p.label}</h3>
-                <p className="text-smoke max-w-md mb-5">{p.copy}</p>
-                <span className="inline-flex items-center gap-2 text-amber text-xs uppercase tracking-[0.2em]">
-                  Discover <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </span>
-              </div>
-            </Link>
+            <PanelCard key={p.to} p={p} active={i === active} className="w-[60vw] lg:w-[42vw] h-[60vh]" />
           ))}
         </motion.div>
       </div>
