@@ -492,6 +492,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Gin",
     image: "/img/xmas-pud-gin.png",
+    packshot: true,
     badge: "Seasonal",
   },
   {
@@ -519,6 +520,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Gin",
     image: "/img/grapefruit-gin.png",
+    packshot: true,
   },
   {
     id: "GIN_HOT_CROSS_BUN",
@@ -548,6 +550,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Vodka",
     image: "/img/original-vodka.png",
+    packshot: true,
   },
   {
     id: "VODKA_D_DOUBLE",
@@ -620,6 +623,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Whisky",
     image: "/img/the-malwa.png",
+    packshot: true,
   },
   {
     id: "WHISKY_THAR",
@@ -633,6 +637,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Whisky",
     image: "/img/thar.png",
+    packshot: true,
     badge: "Small Batch",
   },
   {
@@ -647,6 +652,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Whisky",
     image: "/img/ikka-whisky.png",
+    packshot: true,
     badge: "Rare Batch",
   },
   {
@@ -719,6 +725,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/mango-gin.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -733,6 +740,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/jamun-gin.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -761,6 +769,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/lahori-jeera-gin.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -788,6 +797,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/rose-lychee-gin.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -802,6 +812,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/saffron-vodka.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -816,6 +827,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/paan-vodka.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -830,6 +842,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/popcorn-vodka.png",
+    packshot: true,
     badge: "Indian Series",
   },
   {
@@ -857,6 +870,7 @@ export const SPIRITS = [
     category: "retail",
     section: "Indian Series",
     image: "/img/kala-khatta-vodka.png",
+    packshot: true,
     badge: "Indian Series",
   },
 ];
