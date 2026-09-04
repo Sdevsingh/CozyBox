@@ -105,6 +105,7 @@ export default function SpiritDialog({ spirit, onClose, onAdd }) {
                     {/* ── Imagery ── */}
                     <div className={`relative overflow-hidden flex items-center justify-center aspect-[4/5] sm:aspect-auto sm:min-h-[420px] ${spirit.packshot ? "bg-gradient-to-b from-white/[0.06] via-ink to-ink" : "bg-ink"}`}>
                       <img src={spirit.image || "/img/shop_bottles.jpg"} alt={`Fossey's ${spirit.name}`}
+                        decoding="async"
                         onError={(e) => { if (!e.currentTarget.src.includes("shop_bottles")) e.currentTarget.src = "/img/shop_bottles.jpg"; }}
                         className={spirit.packshot
                           ? "max-h-[340px] w-auto object-contain drop-shadow-[0_18px_38px_rgba(0,0,0,0.55)]"

@@ -254,7 +254,7 @@ export default function Shop() {
                 {lines.length === 0 && <p className="text-smoke text-center mt-16">Your cart is empty.</p>}
                 {lines.map((l) => (
                   <div key={l.id} className="flex gap-4" data-testid={`cart-line-${l.id}`}>
-                    <img src={l.image || "/img/shop_bottles.jpg"} alt={l.name} className="w-16 h-20 object-cover rounded-lg border hairline" />
+                    <img src={l.image || "/img/shop_bottles.jpg"} alt={l.name} loading="lazy" decoding="async" className="w-16 h-20 object-cover rounded-lg border hairline" />
                     <div className="flex-1">
                       <h4 className="text-sm leading-tight">{l.name}</h4>
                       <p className="text-amber text-sm mt-1">{formatPrice(l.price)}</p>
