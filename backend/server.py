@@ -274,7 +274,11 @@ async def contact(body: ContactIn):
 
 @api.post("/bookings")
 async def create_booking(body: BookingIn):
-    # Real Square Appointments booking when configured
+    # Real Square Appointments booking when configured. Square Appointments
+    # write access isn't on our current Square plan (read-only there), so
+    # this currently always falls through to the local path below — kept
+    # as a soft fallback rather than a hard failure so it self-heals if the
+    # plan is ever upgraded, instead of 502-ing every reservation attempt.
     if sq.bookings_enabled and body.startAt:
         try:
             booking = await sq.create_booking(
@@ -287,7 +291,7 @@ async def create_booking(body: BookingIn):
                     "source": "square", "reminder": reminder,
                     "message": "Booking confirmed with Square. See you at the Cozy Box!"}
         except sq.SquareError as e:
-            raise HTTPException(502, f"Square booking failed: {e}")
+            print(f"[bookings] Square write failed, falling back to local booking: {e}")
 
     # Fallback: store locally
     doc = await _save("bookings", body.model_dump())
